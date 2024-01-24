@@ -1,0 +1,1 @@
+public class UnsupportedMethodException extends Exception {}

@@ -1,0 +1,20 @@
+public abstract class SlackBlockElement implements SerializableSlackMessageComponent {
+    private String type;
+
+    private SlackBlockElement(String type) {
+        setType(type);
+    }
+    
+    // Safe initialization - forces children to call parameterized constructor
+    private SlackBlockElement() {
+        this(null);
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+}
