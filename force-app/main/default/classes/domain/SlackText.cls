@@ -1,8 +1,9 @@
 /**
  * Created by epollack@salesforce.com
  * 
- * A class representation of the Slack Text Composition Object. 
- * Used as a building block for other Slack Blocks/Composition Objects.
+ * A class representation of the Slack Text Composition Object based on the
+ * specifications defined in the Slack Web API documentation. Used as a 
+ * building block for Slack Blocks/Block Elements.
  * 
  * Rules:
  * type: plain_text or mrkdwn --> Not currently enforced
@@ -57,10 +58,14 @@ public class SlackText extends SlackBlockComposition {
 
     public void setVerbatim(Boolean verbatim) {
         if (!type.equals('mrkdwn')) {
-            throw new IllegalArgumentException('Verbatim field is only usable when type is mrkdwn.')
+            throw new IllegalArgumentException('Verbatim field is only usable when type is mrkdwn.');
         }
 
         this.verbatim = verbatim;
+    }
+
+    public String toJSON() {
+        return null;
     }
 
 }

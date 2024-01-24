@@ -1,7 +1,7 @@
 public abstract class SlackBlockElement implements SerializableSlackMessageComponent {
     private String type;
 
-    private SlackBlockElement(String type) {
+    protected SlackBlockElement(String type) {
         setType(type);
     }
     

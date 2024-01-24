@@ -29,9 +29,9 @@ public with sharing class SlackPostRequest {
         this.blocks = blocks;
     }
 
-    public String toString() {
+    public override String toString() {
         return 'channel: ' + channel + '\n'
-            + 'text: ' + text
+            + 'text: ' + text;
     }
 
     // public Boolean getMrkdwn() {

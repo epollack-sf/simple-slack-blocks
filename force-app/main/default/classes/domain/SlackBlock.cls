@@ -27,6 +27,11 @@ public abstract class SlackBlock implements SerializableSlackMessageComponent {
     }
 
     // Decorate base add with validation specific to each block type
+
+    /**
+     * IS ADD/REMOVE NEEDED? 
+     * This was originally added for custom serialization and was initially intended to be used with Text Objects
+     */
     public virtual void add(SlackBlockComposition component) {
         children.add(component);
     }

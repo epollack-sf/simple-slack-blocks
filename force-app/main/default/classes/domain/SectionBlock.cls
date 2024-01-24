@@ -14,10 +14,9 @@ public class SectionBlock extends SlackBlock {
         this.accessory = accessory;
     }
 
-    public override void add(SlackBlockElement accessory) {
+    public override void add(SlackBlockComposition accessory) {
         // check if accessory is an instance of a supported type, else throw IllegalArgumentException
-        
-        
+        accessory = null;
         
         super.add(accessory);
     }
