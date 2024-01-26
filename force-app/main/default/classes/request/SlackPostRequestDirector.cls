@@ -6,8 +6,6 @@ public class SlackPostRequestDirector {
     }
 
     public SlackPostRequest constructFunFact() {
-        SlackBlock divider = new DividerBlock();
-
         SlackButton button = new SlackButton();
         button.setText('click me');
         
@@ -27,7 +25,8 @@ public class SlackPostRequestDirector {
                     .field('Field8')
                     .accessory(button)
                     .build(),
-                divider,
+                DividerBlock.builder()
+                    .build(),
                 SectionBlock.builder()
                     .text('Test2')
                     .build()
