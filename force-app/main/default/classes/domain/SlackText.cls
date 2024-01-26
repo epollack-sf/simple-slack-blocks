@@ -5,11 +5,11 @@
  * specifications defined in the Slack Web API documentation. Used as a 
  * building block for Slack Blocks/Block Elements.
  * 
- * Rules:
- * type: plain_text or mrkdwn --> Not currently enforced
- * text: 1 <= length <= 3000
- * emoji: usable with plain_text
- * verbatim: usable with mrkdwn
+ * Schema Rules:
+ * - type: plain_text or mrkdwn --> Not currently enforced
+ * - text: 1 <= length <= 3000
+ * - emoji: usable with plain_text
+ * - verbatim: usable with mrkdwn
  * 
  * Reference: https://api.slack.com/reference/block-kit/composition-objects#text
  */
@@ -34,7 +34,7 @@ public class SlackText extends SlackBlockComposition {
     public void setText(String text) {
         Integer length = text.length();
         if (length < 1 || length > 3000) {
-            throw new IllegalArgumentException('Text length must be between 1 and 3000 characters');
+            throw new SchemaException('Text length must be between 1 and 3000 characters');
         }
         
         this.text = text;
@@ -45,8 +45,8 @@ public class SlackText extends SlackBlockComposition {
     }
 
     public void setEmoji(Boolean emoji) {
-        if (!type.equals('plain_text')) {
-            throw new IllegalArgumentException('Emoji field is only usable when type is plain_text.');
+        if (emoji != null && !type.equals('plain_text')) {
+            throw new SchemaException('Emoji field is only usable when type is plain_text.');
         }
 
         this.emoji = emoji;
@@ -57,8 +57,9 @@ public class SlackText extends SlackBlockComposition {
     }
 
     public void setVerbatim(Boolean verbatim) {
-        if (!type.equals('mrkdwn')) {
-            throw new IllegalArgumentException('Verbatim field is only usable when type is mrkdwn.');
+        if (verbatim != null && !type.equals('mrkdwn')) {
+            System.debug(type);
+            throw new SchemaException('Verbatim field is only usable when type is mrkdwn.');
         }
 
         this.verbatim = verbatim;
@@ -67,5 +68,4 @@ public class SlackText extends SlackBlockComposition {
     public String toJSON() {
         return null;
     }
-
 }
