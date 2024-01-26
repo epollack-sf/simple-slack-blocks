@@ -5,14 +5,14 @@
  * specifications defined in the Slack Web API documentation. Used as a 
  * building block for Slack Blocks.
  * 
- * Rules:
- * type: 'button'
- * text: length <= 75, can only be 'plain_text'
- * action_id: length <= 255
- * url: length <= 3000
- * value: length <= 2000
- * style: null | 'primary' | 'danger'
- * accessibility_label: length <= 75
+ * Schema Rules:
+ * - type: 'button'
+ * - text: length <= 75, can only be 'plain_text'
+ * - action_id: length <= 255
+ * - url: length <= 3000
+ * - value: length <= 2000
+ * - style: null | 'primary' | 'danger'
+ * - accessibility_label: length <= 75
  * 
  * Reference: https://api.slack.com/reference/block-kit/block-elements#button
  */
