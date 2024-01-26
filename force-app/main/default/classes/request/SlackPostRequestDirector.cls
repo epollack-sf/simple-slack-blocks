@@ -6,29 +6,32 @@ public class SlackPostRequestDirector {
     }
 
     public SlackPostRequest constructFunFact() {
-        // need builders for blocks
-
-        // Need add/remove on all SlackBlocks
-        SlackBlock section1 = new SectionBlock();
-        section1.add(new SlackField('plain_text', 'Hi, I am text field'));
-        section1.add(new SlackField('mrkdwn', 'Hi, I am markdown text field'));
-
         SlackBlock divider = new DividerBlock();
 
-        SlackBlock section2 = new SectionBlock();
-        section2.add(new SlackField('plain_text', 'test'));
+        SlackButton button = new SlackButton();
+        button.setText('click me');
         
         return builder
             .toChannel('finsouTest')
             .withText('Hello, I am backup text')
             .withBlocks(new List<SlackBlock> {
-                section1,
+                SectionBlock.builder()
+                    .text('Test')
+                    .field('Field1')
+                    .field('Field2')
+                    .field('Field3')
+                    .field('Field4')
+                    .field('Field5')
+                    .field('Field6')
+                    .field('Field7')
+                    .field('Field8')
+                    .accessory(button)
+                    .build(),
                 divider,
-                section2
+                SectionBlock.builder()
+                    .text('Test2')
+                    .build()
             })
             .build();
     }
-
-
-    
 }
