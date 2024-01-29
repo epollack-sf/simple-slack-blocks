@@ -13,6 +13,10 @@ public class SlackPostRequestDirector {
             .channel('finsouTest')
             .text('Hello, I am backup text')
             .blocks(new List<SlackBlock> {
+                HeaderBlock.builder()
+                    .text(new SlackText('plain_text', 'This is a header', null, null))
+                    .build(),
+                DividerBlock.builder().build(),
                 SectionBlock.builder()
                     .text(new SlackText('mrkdwn', '~Test~', null, true))
                     .field(new SlackText('plain_text', 'Field1', null, null))
@@ -25,8 +29,7 @@ public class SlackPostRequestDirector {
                     .field(new SlackText('plain_text', 'Field1', null, null))
                     .accessory(button)
                     .build(),
-                DividerBlock.builder()
-                    .build(),
+                DividerBlock.builder().build(),
                 ImageBlock.builder()
                     .title(new SlackText('plain_text', 'Image Title', true, null))
                     .altText('Test Image')
