@@ -58,20 +58,20 @@ public class SectionBlock extends SlackBlock {
          * 3. Should I create Config objects that can be passed in and mapped to Text Object on construction?
          */
 
-        public SectionBlockBuilder text(String text) {
+        public SectionBlockBuilder text(SlackText text) {
             if (this.text != null) {
                 throw new BuilderException('text can only be invoked once per build');
             }
-            this.text = new SlackText('plain_text', text, true, null);
+            this.text = text;
             
             return this;
         }
 
-        public SectionBlockBuilder field(String text) {
+        public SectionBlockBuilder field(SlackText field) {
             if (this.fields == null) {
                 this.fields = new List<SlackText>();
             }
-            this.fields.add(new SlackText('plain_text', text, true, null));
+            this.fields.add(field);
             
             return this;
         }
@@ -86,6 +86,8 @@ public class SectionBlock extends SlackBlock {
         }
         // Move outside of builder --> protected abstract method?
         // Validate Schema
+
+        // ! Does not validate character limits --> TODO
         private void validate() {
             String message;
             

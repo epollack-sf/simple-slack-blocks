@@ -1,4 +1,5 @@
-public class SlackPostRequestBuilder implements Resetable {
+// implements Resetable
+public class SlackPostRequestBuilder {
     private SlackPostRequest request;
     
     public SlackPostRequestBuilder() {
