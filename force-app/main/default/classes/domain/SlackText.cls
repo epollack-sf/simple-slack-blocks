@@ -64,8 +64,4 @@ public class SlackText extends SlackBlockComposition {
 
         this.verbatim = verbatim;
     }
-
-    public String toJSON() {
-        return null;
-    }
 }

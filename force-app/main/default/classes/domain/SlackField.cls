@@ -13,8 +13,4 @@ public class SlackField extends SlackBlockComposition {
     public void setText(String text) {
         this.text = text;
     }
-
-    public String toJSON() {
-        return 'Hi';
-    }
 }

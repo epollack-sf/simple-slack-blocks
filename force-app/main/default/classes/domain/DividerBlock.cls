@@ -3,10 +3,6 @@ public class DividerBlock extends SlackBlock {
         super('divider', null);
     }
 
-    public String toJSON() {
-        return JSON.serialize(this, null);
-    }
-
     public static DividerBlockBuilder builder() {
         return new DividerBlockBuilder();
     }

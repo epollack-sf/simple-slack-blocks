@@ -1,4 +1,4 @@
-public abstract class SlackBlock implements SerializableSlackMessageComponent {
+public abstract class SlackBlock {
     protected String type;
     protected String blockId;
 

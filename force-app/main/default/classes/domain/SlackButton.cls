@@ -37,7 +37,7 @@ public class SlackButton extends SlackBlockElement {
 
     public void setText(String text) {
         if (!(text.length() <= 75)) {
-            throw new IllegalArgumentException('Button text length must be less than or equal to 75 characters.');
+            throw new SchemaException('Button text length must be less than or equal to 75 characters.');
         }
 
         // delegation to text constructor works here but what about more dynamic elements?
@@ -50,7 +50,7 @@ public class SlackButton extends SlackBlockElement {
 
     public void setActionId(String actionId) {
         if (!(actionId.length() <= 255)) {
-            throw new IllegalArgumentException('Button action_id length must be less than or equal to 255 characters.');
+            throw new SchemaException('Button action_id length must be less than or equal to 255 characters.');
         }
 
         this.actionId = actionId;
@@ -62,7 +62,7 @@ public class SlackButton extends SlackBlockElement {
 
     public void setUrl() {
         if (!(url.length() <= 3000)) {
-            throw new IllegalArgumentException('Button url length must be less than or equal to 3000 characters.');
+            throw new SchemaException('Button url length must be less than or equal to 3000 characters.');
         }
 
         this.url = url;
@@ -74,7 +74,7 @@ public class SlackButton extends SlackBlockElement {
 
     public void setValue(String value) {
         if (!(value.length() <= 2000)) {
-            throw new IllegalArgumentException('Button value length must be less than or equal to 2000 characters.');
+            throw new SchemaException('Button value length must be less than or equal to 2000 characters.');
         }
 
         this.value = value;
@@ -86,7 +86,7 @@ public class SlackButton extends SlackBlockElement {
 
     public void setStyle(String style) {
         if (!(style.equals('primary') || style.equals('danger'))) {
-            throw new IllegalArgumentException('Button style must be set to \'primary\' or \'danger\'');
+            throw new SchemaException('Button style must be set to \'primary\' or \'danger\'');
         }
 
         this.style = style;
@@ -106,13 +106,9 @@ public class SlackButton extends SlackBlockElement {
 
     public void setAccessibilityLabel(String accessibilityLabel) {
         if (!(accessibilityLabel.length() <= 75)) {
-            throw new IllegalArgumentException('Button accessibility_label length must be less than or equal to 75 characters.');
+            throw new SchemaException('Button accessibility_label length must be less than or equal to 75 characters.');
         }
 
         this.accessibilityLabel = accessibilityLabel;
-    }
-
-    public String toJSON() {
-        return null;
     }
 }

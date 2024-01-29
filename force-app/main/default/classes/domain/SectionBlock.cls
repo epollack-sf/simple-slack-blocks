@@ -15,6 +15,7 @@
  * 
  * Reference: https://api.slack.com/reference/block-kit/blocks#section
  */
+
 public class SectionBlock extends SlackBlock {
     private final SlackText text;
     private final List<SlackText> fields;
@@ -38,17 +39,11 @@ public class SectionBlock extends SlackBlock {
     public SlackBlockElement getAccessory() {
         return accessory;
     }
-    
-    public String toJSON() {
-        System.debug(JSON.serialize(this, true));
-        
-        return 'Hi';
-    }
 
     public static SectionBlockBuilder builder() {
         return new SectionBlockBuilder();
     }
-    // Static?
+    
     public class SectionBlockBuilder {
         private SlackText text;
         private List<SlackText> fields;
