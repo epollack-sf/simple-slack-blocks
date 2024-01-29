@@ -10,9 +10,9 @@ public class SlackPostRequestDirector {
         button.setText('click me');
         
         return builder
-            .toChannel('finsouTest')
-            .withText('Hello, I am backup text')
-            .withBlocks(new List<SlackBlock> {
+            .channel('finsouTest')
+            .text('Hello, I am backup text')
+            .blocks(new List<SlackBlock> {
                 SectionBlock.builder()
                     .text('Test')
                     .field('Field1')

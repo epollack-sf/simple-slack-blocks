@@ -1,21 +1,21 @@
-public class SlackPostRequestBuilder implements Builder {
+public class SlackPostRequestBuilder implements Resetable {
     private SlackPostRequest request;
     
     public SlackPostRequestBuilder() {
         reset();
     }
 
-    public SlackPostRequestBuilder toChannel(String channel) {
+    public SlackPostRequestBuilder channel(String channel) {
         request.setChannel(channel);
         return this;
     }
 
-    public SlackPostRequestBuilder withText(String text) {
+    public SlackPostRequestBuilder text(String text) {
         request.setText(text);
         return this;
     }
 
-    public SlackPostRequestBuilder withBlocks(List<SlackBlock> blocks) {
+    public SlackPostRequestBuilder blocks(List<SlackBlock> blocks) {
         request.setBlocks(blocks);
         return this;
     }
