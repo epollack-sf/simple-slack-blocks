@@ -10,6 +10,8 @@
  * 
  * Schema Rules:
  * - text: must be a plain_text text object with a length <= 150
+ * 
+ * Reference: https://api.slack.com/reference/block-kit/blocks#header
  */
 
 public class HeaderBlock extends SlackBlock {

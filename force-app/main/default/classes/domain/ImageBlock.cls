@@ -1,7 +1,7 @@
 /**
  * Created by epollack@salesforce.com
  * 
- * Immutable class representing a Image Block, a top level layout 
+ * Immutable class representing an Image Block, a top level layout 
  * component that can be added to a surface. This class must be created 
  * by it's corresponding builder class.
  * 

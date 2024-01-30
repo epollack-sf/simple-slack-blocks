@@ -6,8 +6,19 @@ public class SlackPostRequestDirector {
     }
 
     public SlackPostRequest constructFunFact() {
+        
+        // Accessory
         SlackButton button = new SlackButton();
         button.setText('click me');
+
+        // Elements
+        SlackButton helpfulNo = new SlackButton();
+        helpfulNo.setText('No');
+        helpfulNo.setStyle('danger');
+
+        SlackButton helpfulYes = new SlackButton();
+        helpfulYes.setText('Yes');
+        helpfulYes.setStyle('primary');
         
         return builder
             .channel('finsouTest')
@@ -34,6 +45,11 @@ public class SlackPostRequestDirector {
                     .title(new SlackText('plain_text', 'Image Title', true, null))
                     .altText('Test Image')
                     .imageUrl('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnm163IvLzBVh86TlKZil3q4O3rMxUBQvodw&usqp=CAU')
+                    .build(),
+                DividerBlock.builder().build(),
+                ActionsBlock.builder()
+                    .element(helpfulNo)
+                    .element(helpfulYes)
                     .build()
             })
             .build();

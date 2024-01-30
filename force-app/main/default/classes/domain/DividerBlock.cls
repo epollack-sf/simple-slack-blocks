@@ -8,6 +8,8 @@
  * Note: Divider blocks are simple extensions of the base SlackBlock,
  * as they only have a type and a blockId. Builder use is for creational 
  * consisitency with other blocks.
+ * 
+ * Reference: https://api.slack.com/reference/block-kit/blocks#divider
  */
 
 public class DividerBlock extends SlackBlock {
