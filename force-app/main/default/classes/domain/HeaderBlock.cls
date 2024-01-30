@@ -15,7 +15,6 @@
  */
 
 public class HeaderBlock extends SlackBlock {
-    // required, plain_text only, length <= 150 --> Partially enforced
     private final SlackText text;
 
     private HeaderBlock(HeaderBlockBuilder builder) {
@@ -50,7 +49,12 @@ public class HeaderBlock extends SlackBlock {
             String message;
             
             if (this.text == null) {
-                message = 'text is a required field and must be specified';
+                message = 'Text is a required field and must be specified';
+            } else if (!this.text.getType().equals('plain_text')) {
+                message = 'Text must be in plain_text format';
+            // Less than the 3000 character base limit on text blocks
+            } else if (!(this.text.getText().length() <= 150)) {
+                message = 'Text length must be less than 150 characters';
             } else {
                 return;
             }

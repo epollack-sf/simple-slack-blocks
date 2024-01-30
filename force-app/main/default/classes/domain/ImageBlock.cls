@@ -52,13 +52,10 @@ public class ImageBlock extends SlackBlock {
     }
 
     public class ImageBlockBuilder {
-        // required, max 2000, no markup --> Parially Enforced
+        // no markup --> not enforced, need pattern matching (assuming markup == mrkdwn)
         private String altText;
-        // max 3000, required if slack_file is null --> Partially Enforced
         private String imageUrl;
-        // required if imageUrl is null --> Enforced
         private SlackFile slackFile;
-        // max 2000, only plain_text allowed --> Patially Enforceds
         private SlackText title;
 
         private ImageBlockBuilder() {}
@@ -100,7 +97,7 @@ public class ImageBlock extends SlackBlock {
         }
 
         // Validate Schema
-        // ! Does not enforce character limits --> TODO
+        // alt_text: no markup --> Not enforced, use regex
         private void validate() {
             String message;
 
@@ -109,7 +106,13 @@ public class ImageBlock extends SlackBlock {
             } else if (this.title != null && this.title.getType() != 'plain_text') {
                 message = 'Title must be in plain_text format';
             } else if (this.altText == null) {
-                message = 'alt_text is a required field and must be specified';
+                message = 'Alt_text is a required field and must be specified';
+            } else if (!(this.altText.length() <= 2000)) {
+                message = 'Alt_text must be less than 2000 characters';
+            } else if (!(this.imageUrl.length() <= 3000)) {
+                message = 'Image_url must be less than 3000 characters';
+            } else if (!(this.text.getText().length() <= 2000)) {
+                message = 'Title must be less than 2000 characters';
             } else {
                 return;
             }

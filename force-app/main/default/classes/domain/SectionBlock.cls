@@ -84,17 +84,26 @@ public class SectionBlock extends SlackBlock {
 
             return this;
         }
-        // Move outside of builder --> protected abstract method?
+        
         // Validate Schema
-
-        // ! Does not validate character limits --> TODO
+        // Text length <= 3000 enforced in SlackText.cls by default
         private void validate() {
             String message;
+
+            Boolean invalidFields = false;
+            for (SlackText field : fields) {
+                if (!(field.getText().length() <= 2000)) {
+                    invalidFields = true;
+                    break;
+                }
+            }
             
             if (this.fields == null && this.text == null) {
                 message = 'Text cannot be null if fields is null and vice versa';
-            } else if (this.fields?.size() > 10) {
+            } else if (!(this.fields?.size() <= 10)) {
                 message = 'Section Blocks can only have 10 fields';
+            } else if (invalidFields) {
+                message = 'Field text must be less than 2000 characters'
             } else {
                 return;
             }

@@ -14,7 +14,6 @@
  * Reference: https://api.slack.com/reference/block-kit/composition-objects#text
  */
 
-
 public class SlackText extends SlackBlockComposition {
     private String text;
     private Boolean emoji;
@@ -58,7 +57,6 @@ public class SlackText extends SlackBlockComposition {
 
     public void setVerbatim(Boolean verbatim) {
         if (verbatim != null && !type.equals('mrkdwn')) {
-            System.debug(type);
             throw new SchemaException('Verbatim field is only usable when type is mrkdwn.');
         }
 

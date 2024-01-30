@@ -12,7 +12,7 @@
  */
 
 public class ActionsBlock extends SlackBlock {
-    // required, length <= 25, see compatible elements --> Partially enforced
+    // see compatible elements --> Not enforced
     private final List<SlackBlockElement> elements;
     
     private ActionsBlock(ActionsBlockBuilder builder) {
@@ -48,7 +48,7 @@ public class ActionsBlock extends SlackBlock {
 
             if (this.elements == null) {
                 message = 'elements is a required field and must be specified';
-            } else if (this.elements.size() > 25) {
+            } else if (!(this.elements.size() <= 25)) {
                 message = 'Actions Blocks can only have 25 elements';
             } else {
                 return;
