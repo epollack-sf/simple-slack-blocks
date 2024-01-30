@@ -103,7 +103,7 @@ public class SectionBlock extends SlackBlock {
             } else if (!(this.fields?.size() <= 10)) {
                 message = 'Section Blocks can only have 10 fields';
             } else if (invalidFields) {
-                message = 'Field text must be less than 2000 characters'
+                message = 'Field text must be less than 2000 characters';
             } else {
                 return;
             }

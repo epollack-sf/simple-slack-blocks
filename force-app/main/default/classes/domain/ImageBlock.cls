@@ -111,7 +111,7 @@ public class ImageBlock extends SlackBlock {
                 message = 'Alt_text must be less than 2000 characters';
             } else if (!(this.imageUrl.length() <= 3000)) {
                 message = 'Image_url must be less than 3000 characters';
-            } else if (!(this.text.getText().length() <= 2000)) {
+            } else if (!(this.title.getText().length() <= 2000)) {
                 message = 'Title must be less than 2000 characters';
             } else {
                 return;
