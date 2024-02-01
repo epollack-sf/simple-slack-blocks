@@ -16,11 +16,15 @@
  * User Mention: <@user>
  * Channel Mention: <#channel> 
  * Emoji: :text:
+ * Group: <!subteam^id>
  * 
  * Reference: https://api.slack.com/reference/surfaces/formatting
  */
 
 public class Md {
+    // Prevents instance creation
+    private Md() {}
+
     public static String bold(String text) {
         return wrap(text, '*');
     }
@@ -61,6 +65,7 @@ public class Md {
     }
 
     public static String listItem(String text) { 
+        // Notice space after -
         return prefix(text, '- ');
     }
 
@@ -83,14 +88,19 @@ public class Md {
         return wrap(url, '<', '>');
     }
 
-    // Special type of link
     public static String user(String id) {
+        // Special type of link
         return link(prefix(id, '@'));
     }
 
-    // Special type of link
     public static String channel(String id) {
+        // Special type of link
         return link(prefix(id, '#'));
+    }
+
+    public static String group(String id) {
+        // Special type of link
+        return link(prefix(id, '!subteam^'));
     }
 
     // Helper methods
