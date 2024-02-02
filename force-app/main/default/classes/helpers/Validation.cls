@@ -22,8 +22,15 @@ public class Validation {
         }
     }
 
+    public static void isGreaterThan(Integer i, Integer min, Exception e) {
+        // Should not have to check if i is null
+        if ((i ?? 0) < min) {
+            throw e;
+        }
+    }
+
     public static void isLessThan(Integer i, Integer max, Exception e) {
-        // Should not have to check if I is null, sign this static class isn't the best solution for reducing duplicate code from builders
+        // Should not have to check if i is null, sign this static class isn't the best solution for reducing duplicate code from builders
         // Goal --> should work regardless of what's passed in
         if ((i ?? 0) > max) {
             throw e;
