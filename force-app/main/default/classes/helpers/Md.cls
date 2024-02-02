@@ -1,7 +1,7 @@
 /**
  * Created by epollack@salesforce.com
  * 
- * A class with a set of static method defintions used for transforming 
+ * A helper class with a set of static method defintions used for transforming 
  * plain text into Slack's version of markdown, mrkdwn.
  * 
  * Symbol Table:
