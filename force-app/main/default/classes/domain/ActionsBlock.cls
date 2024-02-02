@@ -34,9 +34,7 @@ public class ActionsBlock extends SlackBlock {
         private ActionsBlockBuilder() {}
 
         public ActionsBlockBuilder element(SlackBlockElement element) {
-            if (this.elements == null) {
-                this.elements = new List<SlackBlockElement>();
-            }
+            this.elements = this.elements ?? new List<SlackBlockElement>();
             this.elements.add(element);
 
             return this;
@@ -44,17 +42,8 @@ public class ActionsBlock extends SlackBlock {
 
         // Validate Schema
         private void validate() {
-            String message;
-
-            if (this.elements == null) {
-                message = 'elements is a required field and must be specified';
-            } else if (!(this.elements.size() <= 25)) {
-                message = 'Actions Blocks can only have 25 elements';
-            } else {
-                return;
-            }
-
-            throw new SchemaException('Build Failed: ' + message);
+            Validation.isNotNull(this.elements, new SchemaException('elements is a required field and must be specified'));
+            Validation.isLessThan(this.element.size(), 25, new SchemaException('Actions Blocks can only have 25 elements'));
         }
 
         public ActionsBlock build() {

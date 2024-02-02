@@ -36,9 +36,7 @@ public class HeaderBlock extends SlackBlock {
         private HeaderBlockBuilder() {}
 
         public HeaderBlockBuilder text(SlackText text) {
-            if (this.text != null) {
-                throw new BuilderException('text can only be invoked once per build');
-            }
+            Validation.isNull(this.text, new BuilderException('text can only be invoked once per build'));
             this.text = text;
 
             return this;
@@ -46,13 +44,15 @@ public class HeaderBlock extends SlackBlock {
 
         // Validate Schema
         private void validate() {
-            String message;
+            Validation.isNotNull(this.text, new SchemaException('Text is a required field and must be specified'));
             
-            if (this.text == null) {
-                message = 'Text is a required field and must be specified';
-            } else if (!this.text.getType().equals('plain_text')) {
+            
+            String message; 
+            // Offloaded to Text Object
+            if (!this.text.getType().equals('plain_text')) {
                 message = 'Text must be in plain_text format';
             // Less than the 3000 character base limit on text blocks
+            // Offloaded to Text Object
             } else if (!(this.text.getText().length() <= 150)) {
                 message = 'Text length must be less than 150 characters';
             } else {

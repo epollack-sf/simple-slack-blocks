@@ -50,36 +50,23 @@ public class SectionBlock extends SlackBlock {
         private SlackBlockElement accessory;
 
         private SectionBlockBuilder() {}
-        
-        /**
-         * Questions:
-         * 1. Should user only pass in text, limiting the configurability of the Text Object
-         * 2. Should user create SlackText instance and pass it in?
-         * 3. Should I create Config objects that can be passed in and mapped to Text Object on construction?
-         */
 
         public SectionBlockBuilder text(SlackText text) {
-            if (this.text != null) {
-                throw new BuilderException('text can only be invoked once per build');
-            }
+            Validation.isNull(this.text, new BuilderException('text can only be invoked once per build'));
             this.text = text;
             
             return this;
         }
 
         public SectionBlockBuilder field(SlackText field) {
-            if (this.fields == null) {
-                this.fields = new List<SlackText>();
-            }
+            this.fields = this.fields ?? new List<SlackText>();
             this.fields.add(field);
             
             return this;
         }
 
         public SectionBlockBuilder accessory(SlackBlockElement accessory) {
-            if (this.accessory != null) {
-                throw new BuilderException('accessory can only be invoked once per build');
-            }
+            Validation.isNull(this.accessory, new BuilderException('accessory can only be invoked once per build'));
             this.accessory = accessory;
 
             return this;
@@ -88,8 +75,14 @@ public class SectionBlock extends SlackBlock {
         // Validate Schema
         // Text length <= 3000 enforced in SlackText.cls by default
         private void validate() {
+            Validation.isLessThan(this.fields?.size(), 10, new SchemaException('Section Blocks can only have 10 fields'));
+            Validation.areNotNull(new List<Object> {
+                this.fields,
+                this.text
+            }, new SchemaException('Text is required if fields is null'))
             String message;
 
+            // Offloaded to Text Object
             Boolean invalidFields = false;
             for (SlackText field : fields) {
                 if (!(field.getText().length() <= 2000)) {
@@ -97,12 +90,8 @@ public class SectionBlock extends SlackBlock {
                     break;
                 }
             }
-            
-            if (this.fields == null && this.text == null) {
-                message = 'Text cannot be null if fields is null and vice versa';
-            } else if (!(this.fields?.size() <= 10)) {
-                message = 'Section Blocks can only have 10 fields';
-            } else if (invalidFields) {
+
+            if (invalidFields) {
                 message = 'Field text must be less than 2000 characters';
             } else {
                 return;

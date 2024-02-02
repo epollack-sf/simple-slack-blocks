@@ -61,36 +61,28 @@ public class ImageBlock extends SlackBlock {
         private ImageBlockBuilder() {}
     
         public ImageBlockBuilder altText(String altText) {
-            if (this.altText != null) {
-                throw new BuilderException('altText can only be invoked once per build');
-            }
+            Validation.isNull(this.altText, new BuilderException('altText can only be invoked once per build'));
             this.altText = altText;
 
             return this;
         }
 
         public ImageBlockBuilder imageUrl(String imageUrl) {
-            if (this.imageUrl != null) {
-                throw new BuilderException('imageUrl can only be invoked once per build');
-            }
+            Validation.isNull(this.imageUrl, new BuilderException('imageUrl can only be invoked once per build'));
             this.imageUrl = imageUrl;
 
             return this;
         }
 
         public ImageBlockBuilder slackFile(SlackFile file) {
-            if (this.slackFile != null) {
-                throw new BuilderException('slackFile can only be invoked once per build');
-            }
+            Validation.isNull(this.slackFile, new BuilderException('slackFile can only be invoked once per build'));
             this.slackFile = slackFile;
 
             return this;
         }
 
         public ImageBlockBuilder title(SlackText title) {
-            if (this.title != null) {
-                throw new BuilderException('title can only be invoked once per build');
-            }
+            Validation.isNull(this.imageUrl, new BuilderException('imageUrl can only be invoked once per build'));
             this.title = title;
 
             return this;
@@ -99,18 +91,26 @@ public class ImageBlock extends SlackBlock {
         // Validate Schema
         // alt_text: no markup --> Not enforced, use regex
         private void validate() {
+            Validation.isNotNull(this.altText, new SchemaException('Alt_text is a required field and must be specified'));
+            Validation.isLessThan(this.altText, 2000, new SchemaException('Alt_text must be less than 2000 characters'));
+            Validation.areNotNull(new List<Object>() {
+                this.imageUrl,
+                this.slackFile
+            }, new SchemaException('Either image_url or slack_file must be populated'));
+            
+            // Validation class BREAKS DOWN HERE because imageUrl can be null, reason for null coalescing operator in Validation.cls
+            Validation.isLessThan(this.imageUrl, 3000, new SchemaException('Image_url must be less than 3000 characters'));
+            
+            
+            
+            
+            
             String message;
 
-            if (this.imageUrl == null && this.slackFile == null) {
-                message = 'Either image_url or slack_file must be populated';
-            } else if (this.title != null && this.title.getType() != 'plain_text') {
+            // Title Type check offloaded to the actual type
+            if (this.title != null && this.title.getType() != 'plain_text') {
                 message = 'Title must be in plain_text format';
-            } else if (this.altText == null) {
-                message = 'Alt_text is a required field and must be specified';
-            } else if (!(this.altText.length() <= 2000)) {
-                message = 'Alt_text must be less than 2000 characters';
-            } else if (!(this.imageUrl.length() <= 3000)) {
-                message = 'Image_url must be less than 3000 characters';
+            // Offloaded to Text Object
             } else if (!(this.title.getText().length() <= 2000)) {
                 message = 'Title must be less than 2000 characters';
             } else {
