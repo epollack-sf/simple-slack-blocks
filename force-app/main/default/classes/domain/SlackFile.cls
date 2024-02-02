@@ -13,7 +13,7 @@
  * Reference: https://api.slack.com/reference/block-kit/composition-objects#slack_file
  */
 
-public class SlackFile {
+public class SlackFile implements SlackBlockComposition {
     private final String url;
     private final String id;
 
