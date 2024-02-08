@@ -13,8 +13,10 @@
  */
 
 public class DividerBlock extends SlackBlock {
+    private static final String TYPE = 'divider';
+    
     private DividerBlock() {
-        super('divider', null);
+        super(TYPE, null);
     }
 
     public static DividerBlockBuilder builder() {

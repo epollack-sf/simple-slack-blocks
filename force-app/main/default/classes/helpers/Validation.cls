@@ -47,8 +47,8 @@ public class Validation {
     //  Client also shouldn't need to create 2 lists of predicates and expected values to test
 
     // What about a ValidationRule class that has an actual and expected value
-    public static void areNotNull(List<Object> fields, Exception e) {
-        for (Object field : fields) {
+    public static void areNotNull(List<Object> os, Exception e) {
+        for (Object field : os) {
             isNotNull(field, e);
         }
     }

@@ -17,22 +17,24 @@
  */
 
 public class SectionBlock extends SlackBlock {
-    private final SlackText text;
-    private final List<SlackText> fields;
+    private static final String TYPE = 'section';
+    
+    private final SlackTextObject text;
+    private final List<SlackTextObject> fields;
     private final SlackBlockElement accessory;
     
     private SectionBlock(SectionBlockBuilder builder) {
-        super('section', null);
+        super(TYPE, null);
         this.text = builder.text;
         this.fields = builder.fields;
         this.accessory = builder.accessory;
     }
 
-    public SlackText getText() {
+    public SlackTextObject getText() {
         return text;
     }
 
-    public List<SlackText> getFields() {
+    public List<SlackTextObject> getFields() {
         return fields;
     }
 
@@ -45,21 +47,21 @@ public class SectionBlock extends SlackBlock {
     }
     
     public class SectionBlockBuilder {
-        private SlackText text;
-        private List<SlackText> fields;
+        private SlackTextObject text;
+        private List<SlackTextObject> fields;
         private SlackBlockElement accessory;
 
         private SectionBlockBuilder() {}
 
-        public SectionBlockBuilder text(SlackText text) {
+        public SectionBlockBuilder text(SlackTextObject text) {
             Validation.isNull(this.text, new BuilderException('text can only be invoked once per build'));
             this.text = text;
             
             return this;
         }
 
-        public SectionBlockBuilder field(SlackText field) {
-            this.fields = this.fields ?? new List<SlackText>();
+        public SectionBlockBuilder field(SlackTextObject field) {
+            this.fields = this.fields ?? new List<SlackTextObject>();
             this.fields.add(field);
             
             return this;
@@ -73,31 +75,23 @@ public class SectionBlock extends SlackBlock {
         }
         
         // Validate Schema
-        // Text length <= 3000 enforced in SlackText.cls by default
+        // Text length <= 3000 enforced in SlackText.cls by default --> Problematic because now the Section Block has to know the internals of TextObject
         private void validate() {
             Validation.isLessThan(this.fields?.size(), 10, new SchemaException('Section Blocks can only have 10 fields'));
             Validation.areNotNull(new List<Object> {
                 this.fields,
                 this.text
-            }, new SchemaException('Text is required if fields is null'))
-            String message;
+            }, new SchemaException('Text is required if fields is null'));
 
-            // Offloaded to Text Object
-            Boolean invalidFields = false;
-            for (SlackText field : fields) {
-                if (!(field.getText().length() <= 2000)) {
-                    invalidFields = true;
-                    break;
-                }
+            // Not good, not offloading validation off to another object, forcing more complex logic here
+            // Mixing intrinsic with extrinsic validation
+            for (SlackTextObject field : fields) {
+                Validation.isLessThan(
+                    field.getText().length(),
+                    2000,
+                    new SchemaException('Fields must be less than or equal to 2000 characters');
+                );
             }
-
-            if (invalidFields) {
-                message = 'Field text must be less than 2000 characters';
-            } else {
-                return;
-            }
-
-            throw new SchemaException('Build Failed: ' + message);
         }
 
         public SectionBlock build() {

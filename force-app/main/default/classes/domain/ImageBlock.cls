@@ -18,13 +18,15 @@
  */
 
 public class ImageBlock extends SlackBlock {
+    private static final String TYPE = 'image';
+    
     private final String altText;
     private final String imageUrl;
     private final SlackFile slackFile;
-    private final SlackText title;
+    private final SlackPlainTextObject title;
     
     private ImageBlock(ImageBlockBuilder builder) {
-        super('image', null);
+        super(TYPE, null);
         this.altText = builder.altText;
         this.imageUrl = builder.imageUrl;
         this.slackFile = builder.slackFile;
@@ -43,7 +45,7 @@ public class ImageBlock extends SlackBlock {
         return slackFile;
     }
 
-    public SlackText getTitle() {
+    public SlackPlainTextObject getTitle() {
         return title;
     }
 
@@ -56,7 +58,7 @@ public class ImageBlock extends SlackBlock {
         private String altText;
         private String imageUrl;
         private SlackFile slackFile;
-        private SlackText title;
+        private SlackPlainTextObject title;
 
         private ImageBlockBuilder() {}
     
@@ -81,7 +83,7 @@ public class ImageBlock extends SlackBlock {
             return this;
         }
 
-        public ImageBlockBuilder title(SlackText title) {
+        public ImageBlockBuilder title(SlackPlainTextObject title) {
             Validation.isNull(this.imageUrl, new BuilderException('imageUrl can only be invoked once per build'));
             this.title = title;
 
@@ -101,23 +103,13 @@ public class ImageBlock extends SlackBlock {
             // Validation class BREAKS DOWN HERE because imageUrl can be null, reason for null coalescing operator in Validation.cls
             Validation.isLessThan(this.imageUrl, 3000, new SchemaException('Image_url must be less than 3000 characters'));
             
-            
-            
-            
-            
-            String message;
-
-            // Title Type check offloaded to the actual type
-            if (this.title != null && this.title.getType() != 'plain_text') {
-                message = 'Title must be in plain_text format';
-            // Offloaded to Text Object
-            } else if (!(this.title.getText().length() <= 2000)) {
-                message = 'Title must be less than 2000 characters';
-            } else {
-                return;
-            }
-
-            throw new SchemaException('Build Failed: ' + message);
+            // Not good, checking for text length here forces SectionBlock to iterate over all fields
+            // Mixing intrinsic with extrinsic validation
+            Validation.isLessThan(
+                this.title.getText().length(),
+                2000,
+                new SchemaException('Title must be less than 2000 characters')
+            )
         }
 
         public ImageBlock build() {

@@ -12,11 +12,14 @@
  */
 
 public class ActionsBlock extends SlackBlock {
+    private static final String TYPE = 'actions';
+    
     // see compatible elements --> Not enforced
+    // enforce with ActionsBlockElement interface
     private final List<SlackBlockElement> elements;
     
     private ActionsBlock(ActionsBlockBuilder builder) {
-        super('actions', null);
+        super(TYPE, null);
         this.elements = builder.elements;
     }
 

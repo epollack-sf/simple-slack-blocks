@@ -15,14 +15,16 @@
  */
 
 public class HeaderBlock extends SlackBlock {
-    private final SlackText text;
+    private static final String TYPE = 'header';
+    
+    private final SlackPlainTextObject text;
 
     private HeaderBlock(HeaderBlockBuilder builder) {
-        super('header', null);
+        super(TYPE, null);
         this.text = builder.text;
     }
 
-    public SlackText getText() {
+    public SlackPlainTextObject getText() {
         return text;
     }
 
@@ -31,11 +33,12 @@ public class HeaderBlock extends SlackBlock {
     }
 
     public class HeaderBlockBuilder {
-        private SlackText text;
+        private SlackPlainTextObject text;
 
         private HeaderBlockBuilder() {}
 
-        public HeaderBlockBuilder text(SlackText text) {
+        // Problematic because developer still needs to know about 150 Character Limit
+        public HeaderBlockBuilder text(SlackPlainTextObject text) {
             Validation.isNull(this.text, new BuilderException('text can only be invoked once per build'));
             this.text = text;
 
@@ -46,20 +49,13 @@ public class HeaderBlock extends SlackBlock {
         private void validate() {
             Validation.isNotNull(this.text, new SchemaException('Text is a required field and must be specified'));
             
-            
-            String message; 
-            // Offloaded to Text Object
-            if (!this.text.getType().equals('plain_text')) {
-                message = 'Text must be in plain_text format';
-            // Less than the 3000 character base limit on text blocks
-            // Offloaded to Text Object
-            } else if (!(this.text.getText().length() <= 150)) {
-                message = 'Text length must be less than 150 characters';
-            } else {
-                return;
-            }
-
-            throw new SchemaException('Build Failed: ' + message);
+            // Not good, checking for text length here forces SectionBlock to iterate over all fields
+            // Mixing intrinsic with extrinsic validation
+            Validation.isLessThan(
+                this.text.getText().length(), 
+                150, 
+                new SchemaException('Text length must be less than 150 characters')
+            );
         }
 
         public HeaderBlock build() {

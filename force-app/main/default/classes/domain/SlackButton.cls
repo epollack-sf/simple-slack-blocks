@@ -19,6 +19,8 @@
 
 
 public class SlackButton extends SlackBlockElement {
+    private static final String TYPE = 'button';
+    
     private SlackText text;
     private String actionId;
     private String url;
@@ -28,7 +30,7 @@ public class SlackButton extends SlackBlockElement {
     private String accessibilityLabel;
     
     public SlackButton() {
-        super('button');
+        super(TYPE);
     }
 
     public SlackText getText() {
