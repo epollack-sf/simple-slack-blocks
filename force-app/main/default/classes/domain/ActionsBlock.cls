@@ -37,7 +37,11 @@ public class ActionsBlock extends SlackBlock {
         private ActionsBlockBuilder() {}
 
         public ActionsBlockBuilder element(SlackBlockElement element) {
-            this.elements = this.elements ?? new List<SlackBlockElement>();
+            // Replace conditional once upgrade to SOAP API v60.0 is complete
+            // this.elements = this.elements ?? new List<SlackBlockElement>();
+            if (this.elements == null) {
+                this.elements = new List<SlackBlockElement>();
+            }
             this.elements.add(element);
 
             return this;
@@ -46,7 +50,7 @@ public class ActionsBlock extends SlackBlock {
         // Validate Schema
         private void validate() {
             Validation.isNotNull(this.elements, new SchemaException('elements is a required field and must be specified'));
-            Validation.isLessThan(this.element.size(), 25, new SchemaException('Actions Blocks can only have 25 elements'));
+            Validation.isLessThan(this.elements.size(), 25, new SchemaException('Actions Blocks can only have 25 elements'));
         }
 
         public ActionsBlock build() {

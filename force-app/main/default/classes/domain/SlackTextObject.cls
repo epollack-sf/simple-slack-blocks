@@ -1,9 +1,11 @@
 public abstract class SlackTextObject implements SlackBlockComposition {   
-    protected static final Integer MAX_LENGTH = 3000;
-    protected static final Integer MIN_LENGTH = 1;
+    // Not static because all classes that inherit from SlackTextObject will be able to see the max and min constants
+    protected final Integer MAX_LENGTH = 3000;
+    protected final Integer MIN_LENGTH = 1;
     
-    protected final String type;
-    protected final String text;
+    // Implicitly final to allow for validation in setters (setters cannot be called on explicitly final variables, even if invoked in constructor)
+    protected String type;
+    protected String text;
 
     protected SlackTextObject(String type, String text) {
         setType(type);

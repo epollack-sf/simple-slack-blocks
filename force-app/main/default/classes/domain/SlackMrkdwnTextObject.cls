@@ -9,14 +9,10 @@ public class SlackMrkdwnTextObject extends SlackTextObject {
 
     public SlackMrkdwnTextObject(String text, Boolean verbatim) {
         super(TYPE, text);
-        setVerbatim(verbatim);
+        this.verbatim = verbatim;
     }
 
     public Boolean getVerbatim() {
         return verbatim;
-    }
-
-    private void setVerbatim(Boolean verbatim) {
-        this.verbatim = verbatim;
     }
 }

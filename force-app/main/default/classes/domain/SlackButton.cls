@@ -7,7 +7,7 @@
  * 
  * Schema Rules:
  * - type: 'button'
- * - text: length <= 75, can only be 'plain_text'
+ * - text: length <= 75, can only be 'plain_text', required
  * - action_id: length <= 255
  * - url: length <= 3000
  * - value: length <= 2000
@@ -21,96 +21,136 @@
 public class SlackButton extends SlackBlockElement {
     private static final String TYPE = 'button';
     
-    private SlackText text;
-    private String actionId;
-    private String url;
-    private String value;
-    private String style;
-    private SlackConfirm confirm;
-    private String accessibilityLabel;
+    private final SlackPlainTextObject text;
+    private final String actionId;
+    private final String url;
+    private final String value;
+    private final String style;
+    private final SlackConfirm confirm;
+    private final String accessibilityLabel;
     
-    public SlackButton() {
+    private SlackButton(SlackButtonBuilder builder) {
         super(TYPE);
+        this.text = builder.text;
+        this.actionId = builder.actionId;
+        this.url = builder.url;
+        this.value = builder.value;
+        this.style = builder.style;
+        this.confirm = builder.confirm;
+        this.accessibilityLabel = builder.accessibilityLabel;
     }
 
-    public SlackText getText() {
+    public SlackPlainTextObject getText() {
         return text;
-    }
-
-    public void setText(String text) {
-        if (!(text.length() <= 75)) {
-            throw new SchemaException('Button text length must be less than or equal to 75 characters.');
-        }
-
-        // delegation to text constructor works here but what about more dynamic elements?
-        this.text = new SlackText('plain_text', text, null, null);
     }
 
     public String getActionId() {
         return actionId;
     }
 
-    public void setActionId(String actionId) {
-        if (!(actionId.length() <= 255)) {
-            throw new SchemaException('Button action_id length must be less than or equal to 255 characters.');
-        }
-
-        this.actionId = actionId;
-    }
-
     public String getUrl() {
         return url;
-    }
-
-    public void setUrl() {
-        if (!(url.length() <= 3000)) {
-            throw new SchemaException('Button url length must be less than or equal to 3000 characters.');
-        }
-
-        this.url = url;
     }
 
     public String getValue() {
         return value;
     }
 
-    public void setValue(String value) {
-        if (!(value.length() <= 2000)) {
-            throw new SchemaException('Button value length must be less than or equal to 2000 characters.');
-        }
-
-        this.value = value;
-    }
-
     public String getStyle() {
         return style;
-    }
-
-    public void setStyle(String style) {
-        if (!(style.equals('primary') || style.equals('danger'))) {
-            throw new SchemaException('Button style must be set to \'primary\' or \'danger\'');
-        }
-
-        this.style = style;
     }
 
     public SlackConfirm getConfirm() {
         return confirm;
     }
 
-    public void setConfirm(SlackConfirm confirm) {
-        this.confirm = confirm;
-    }
-
     public String getAccessibilityLabel() {
         return accessibilityLabel;
     }
 
-    public void setAccessibilityLabel(String accessibilityLabel) {
-        if (!(accessibilityLabel.length() <= 75)) {
-            throw new SchemaException('Button accessibility_label length must be less than or equal to 75 characters.');
+    public static SlackButtonBuilder builder() {
+        return new SlackButtonBuilder();
+    }
+
+    public class SlackButtonBuilder {
+        private SlackPlainTextObject text;
+        private String actionId;
+        private String url;
+        private String value;
+        private String style;
+        private SlackConfirm confirm;
+        private String accessibilityLabel;
+
+        private SlackButtonBuilder() {}
+
+        public SlackButtonBuilder text(SlackPlainTextObject text) {
+            Validation.isNull(this.text, new BuilderException('text can only be invoked once per build'));
+            this.text = text;
+
+            return this;
         }
 
-        this.accessibilityLabel = accessibilityLabel;
+        public SlackButtonBuilder actionId(String actionId) {
+            Validation.isNull(this.actionId, new BuilderException('actionId can only be invoked once per build'));
+            this.actionId = actionId;
+
+            return this;
+        }
+
+        public SlackButtonBuilder url(String url) {
+            Validation.isNull(this.url, new BuilderException('url can only be invoked once per build'));
+            this.url = url;
+
+            return this;
+        }
+
+        public SlackButtonBuilder value(String value) {
+            Validation.isNull(this.value, new BuilderException('value can only be invoked once per build'));
+            this.value = value;
+
+            return this;
+        }
+
+        public SlackButtonBuilder confirm(SlackConfirm confirm) {
+            Validation.isNull(this.confirm, new BuilderException('confirm can only be invoked once per build'));
+            this.confirm = confirm;
+
+            return this;
+        }
+
+        public SlackButtonBuilder accessibilityLabel(String accessibilityLabel) {
+            Validation.isNull(this.accessibilityLabel, new BuilderException('accessibilityLabel can only be invoked once per build'));
+            this.accessibilityLabel = accessibilityLabel;
+
+            return this;
+        }
+
+        public SlackButtonBuilder primary() {
+            Validation.isNull(this.style, new BuilderException('style can only be set once per build'));
+            this.style = 'primary';
+
+            return this;
+        }
+
+        public SlackButtonBuilder danger() {
+            Validation.isNull(this.style, new BuilderException('style can only be set once per build'));
+            this.style = 'danger';
+
+            return this;
+        }
+
+        private void validate() {
+            Validation.isNotNull(this.text, new SchemaException('Text is a required field and must be populated'));
+            Validation.isLessThan(this.text.getText().length(), 75, new SchemaException('Text length must be less than 75 characters'));
+            Validation.isLessThan(this.actionId?.length(), 255, new SchemaException('Action id must be less than 255 characters'));
+            Validation.isLessThan(this.url?.length(), 3000, new SchemaException('Url must be less than 3000 characters'));
+            Validation.isLessThan(this.value?.length(), 2000, new SchemaException('Value must be less than 2000 characters'));
+            Validation.isLessThan(this.accessibilityLabel?.length(), 75, new SchemaException('Accessiblity label must be less than 75 characters'));
+        }
+
+        public SlackButton build() {
+            validate();
+            return new SlackButton(this);
+        }
     }
 }

@@ -61,7 +61,11 @@ public class SectionBlock extends SlackBlock {
         }
 
         public SectionBlockBuilder field(SlackTextObject field) {
-            this.fields = this.fields ?? new List<SlackTextObject>();
+            // Replace conditional once upgrade to SOAP API v60.0 is complete
+            // this.fields = this.fields ?? new List<SlackTextObject>();
+            if (this.fields == null) {
+                this.fields = new List<SlackTextObject>();
+            }
             this.fields.add(field);
             
             return this;
@@ -89,7 +93,7 @@ public class SectionBlock extends SlackBlock {
                 Validation.isLessThan(
                     field.getText().length(),
                     2000,
-                    new SchemaException('Fields must be less than or equal to 2000 characters');
+                    new SchemaException('Fields must be less than or equal to 2000 characters')
                 );
             }
         }

@@ -9,14 +9,10 @@ public class SlackPlainTextObject extends SlackTextObject {
 
     public SlackPlainTextObject(String text, Boolean emoji) {
         super(TYPE, text);
-        setEmoji(emoji);
+        this.emoji = emoji;
     }
 
     public Boolean getEmoji() {
         return emoji;
-    }
-
-    private void setEmoji(Boolean emoji) {
-        this.emoji = emoji;
     }
 }

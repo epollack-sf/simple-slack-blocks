@@ -94,14 +94,17 @@ public class ImageBlock extends SlackBlock {
         // alt_text: no markup --> Not enforced, use regex
         private void validate() {
             Validation.isNotNull(this.altText, new SchemaException('Alt_text is a required field and must be specified'));
-            Validation.isLessThan(this.altText, 2000, new SchemaException('Alt_text must be less than 2000 characters'));
-            Validation.areNotNull(new List<Object>() {
-                this.imageUrl,
-                this.slackFile
-            }, new SchemaException('Either image_url or slack_file must be populated'));
+            Validation.isLessThan(this.altText.length(), 2000, new SchemaException('Alt_text must be less than 2000 characters'));
+            
+            
+            // Does not work as expected, if one is null, which is valid, then the condition fails
+            // Validation.areNotNull(new List<Object> {
+            //     this.imageUrl,
+            //     this.slackFile
+            // }, new SchemaException('Either image_url or slack_file must be populated'));
             
             // Validation class BREAKS DOWN HERE because imageUrl can be null, reason for null coalescing operator in Validation.cls
-            Validation.isLessThan(this.imageUrl, 3000, new SchemaException('Image_url must be less than 3000 characters'));
+            Validation.isLessThan(this.imageUrl.length(), 3000, new SchemaException('Image_url must be less than 3000 characters'));
             
             // Not good, checking for text length here forces SectionBlock to iterate over all fields
             // Mixing intrinsic with extrinsic validation
@@ -109,13 +112,12 @@ public class ImageBlock extends SlackBlock {
                 this.title.getText().length(),
                 2000,
                 new SchemaException('Title must be less than 2000 characters')
-            )
+            );
         }
 
         public ImageBlock build() {
             validate();
             return new ImageBlock(this);
         }
-
     }
 }

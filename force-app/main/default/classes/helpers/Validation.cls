@@ -24,7 +24,17 @@ public class Validation {
 
     public static void isGreaterThan(Integer i, Integer min, Exception e) {
         // Should not have to check if i is null
-        if ((i ?? 0) < min) {
+        
+        // Replace conditional once upgrade to SOAP API v60.0 is complete
+        // if ((i ?? 0) < min) {
+        //     throw e;
+        // }
+
+        if (i == null) {
+            i = 0;
+        }
+
+        if (i < min) {
             throw e;
         }
     }
@@ -32,7 +42,18 @@ public class Validation {
     public static void isLessThan(Integer i, Integer max, Exception e) {
         // Should not have to check if i is null, sign this static class isn't the best solution for reducing duplicate code from builders
         // Goal --> should work regardless of what's passed in
-        if ((i ?? 0) > max) {
+
+        // Replace conditional once upgrade to SOAP API v60.0 is complete
+        // if ((i ?? 0) > max) {
+        //     throw e;
+        // }
+        
+        
+        if (i == null) {
+            i = 0;
+        }
+
+        if (i > max) {
             throw e;
         }
     }
@@ -48,8 +69,8 @@ public class Validation {
 
     // What about a ValidationRule class that has an actual and expected value
     public static void areNotNull(List<Object> os, Exception e) {
-        for (Object field : os) {
-            isNotNull(field, e);
+        for (Object o : os) {
+            isNotNull(o, e);
         }
     }
 }
