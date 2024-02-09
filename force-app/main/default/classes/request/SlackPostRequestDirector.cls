@@ -32,8 +32,8 @@ public class SlackPostRequestDirector {
                     .build(),
                 DividerBlock.builder().build(),
                 ImageBlock.builder()
-                    .title(new SlackPlainTextObject('Text'))
-                    .altText('Intense Cow')
+                    .title(new SlackPlainTextObject('Intense Cow'))
+                    .altText('Alt text')
                     .imageUrl('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnm163IvLzBVh86TlKZil3q4O3rMxUBQvodw&usqp=CAU')
                     .build(),
                 DividerBlock.builder().build(),
