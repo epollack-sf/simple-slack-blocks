@@ -11,7 +11,7 @@
  * Schema Rules:
  * - text: required if there are no fields, otherwise preferred. 0 < length <= 3000
  * - fields: field count <= 10, text length <= 2000
- * - accessory: element must be compatible --> do I need to test for this?
+ * - accessory: element must be compatible --> use Interface
  * 
  * Reference: https://api.slack.com/reference/block-kit/blocks#section
  */
@@ -47,6 +47,9 @@ public class SectionBlock extends SlackBlock {
     }
     
     public class SectionBlockBuilder {
+        private static final Integer MAX_FIELDS = 10;
+        private static final Integer MAX_FIELD_LENGTH = 2000;
+        
         private SlackTextObject text;
         private List<SlackTextObject> fields;
         private SlackBlockElement accessory;
@@ -54,25 +57,25 @@ public class SectionBlock extends SlackBlock {
         private SectionBlockBuilder() {}
 
         public SectionBlockBuilder text(SlackTextObject text) {
-            Validation.isNull(this.text, new BuilderException('text can only be invoked once per build'));
+            if (this.text != null) {
+                throw new new BuilderException('text can only be invoked once per build');
+            }
             this.text = text;
             
             return this;
         }
 
         public SectionBlockBuilder field(SlackTextObject field) {
-            // Replace conditional once upgrade to SOAP API v60.0 is complete
-            // this.fields = this.fields ?? new List<SlackTextObject>();
-            if (this.fields == null) {
-                this.fields = new List<SlackTextObject>();
-            }
+            this.fields = this.fields ?? new List<SlackTextObject>();
             this.fields.add(field);
             
             return this;
         }
 
         public SectionBlockBuilder accessory(SlackBlockElement accessory) {
-            Validation.isNull(this.accessory, new BuilderException('accessory can only be invoked once per build'));
+            if (this.accessory != null) {
+                throw new new BuilderException('accessory can only be invoked once per build');
+            }
             this.accessory = accessory;
 
             return this;
@@ -81,20 +84,27 @@ public class SectionBlock extends SlackBlock {
         // Validate Schema
         // Text length <= 3000 enforced in SlackText.cls by default --> Problematic because now the Section Block has to know the internals of TextObject
         private void validate() {
-            Validation.isLessThan(this.fields?.size(), 10, new SchemaException('Section Blocks can only have 10 fields'));
-            Validation.areNotNull(new List<Object> {
-                this.fields,
-                this.text
-            }, new SchemaException('Text is required if fields is null'));
+            checkRequiredFields();
+            checkFieldLengths();
+        }
+
+        private void checkRequiredFields() {
+            if (this.fields == null && this.text == null) {
+                throw new SchemaException('Text is required if fields is null');
+            }
+        }
+
+        private void checkFieldLengths() {
+            if (this.fields?.size() > MAX_FIELDS) {
+                throw new SchemaException('Section Blocks can only have ' + MAX_FIELDS + ' fields');
+            }
 
             // Not good, not offloading validation off to another object, forcing more complex logic here
             // Mixing intrinsic with extrinsic validation
-            for (SlackTextObject field : fields) {
-                Validation.isLessThan(
-                    field.getText().length(),
-                    2000,
-                    new SchemaException('Fields must be less than or equal to 2000 characters')
-                );
+            for (SlackTextObject field : this.fields) {
+                if (field.getText().length() > MAX_FIELD_LENGTH) {
+                    throw new SchemaException('Fields must be less than or equal to ' + MAX_FIELD_LENGTH + ' characters');
+                }
             }
         }
 

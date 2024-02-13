@@ -33,13 +33,17 @@ public class HeaderBlock extends SlackBlock {
     }
 
     public class HeaderBlockBuilder {
+        private static final Integer MAX_TEXT_LENGTH = 150;
+        
         private SlackPlainTextObject text;
 
         private HeaderBlockBuilder() {}
 
-        // Problematic because developer still needs to know about 150 Character Limit
+        // Problematic because developer still needs to know about 150 Character Limit -> ?? Java SDK doesn't seem to care about this
         public HeaderBlockBuilder text(SlackPlainTextObject text) {
-            Validation.isNull(this.text, new BuilderException('text can only be invoked once per build'));
+            if (this.text != null) {
+                throw new BuilderException('text can only be invoked once per build');
+            }
             this.text = text;
 
             return this;
@@ -47,15 +51,25 @@ public class HeaderBlock extends SlackBlock {
 
         // Validate Schema
         private void validate() {
-            Validation.isNotNull(this.text, new SchemaException('Text is a required field and must be specified'));
+            // Alternative: Add required fields to builder constructor instead of checking after builder use
+            // Pros: shifts required fields to compile error
+            // Cons: Some blocks, like ActionsBlock, have lists for required fields, defeating purpose of builder
+            checkRequiredFields();
             
-            // Not good, checking for text length here forces SectionBlock to iterate over all fields
             // Mixing intrinsic with extrinsic validation
-            Validation.isLessThan(
-                this.text.getText().length(), 
-                150, 
-                new SchemaException('Text length must be less than 150 characters')
-            );
+            checkFieldLengths();
+        }
+
+        private void checkRequiredFields() {
+            if (this.text == null) {
+                throw new SchemaException('Text is a required field and must be specified');
+            }
+        }
+
+        private void checkFieldLengths() {
+            if (this.text.getText().length() > MAX_TEXT_LENGTH) {
+                throw new SchemaException('Text length must be less than ' + MAX_TEXT_LENGTH + ' characters');
+            }
         }
 
         public HeaderBlock build() {

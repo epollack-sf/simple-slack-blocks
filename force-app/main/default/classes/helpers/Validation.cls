@@ -25,16 +25,7 @@ public class Validation {
     public static void isGreaterThan(Integer i, Integer min, Exception e) {
         // Should not have to check if i is null
         
-        // Replace conditional once upgrade to SOAP API v60.0 is complete
-        // if ((i ?? 0) < min) {
-        //     throw e;
-        // }
-
-        if (i == null) {
-            i = 0;
-        }
-
-        if (i < min) {
+        if ((i ?? 0) < min) {
             throw e;
         }
     }
@@ -43,17 +34,7 @@ public class Validation {
         // Should not have to check if i is null, sign this static class isn't the best solution for reducing duplicate code from builders
         // Goal --> should work regardless of what's passed in
 
-        // Replace conditional once upgrade to SOAP API v60.0 is complete
-        // if ((i ?? 0) > max) {
-        //     throw e;
-        // }
-        
-        
-        if (i == null) {
-            i = 0;
-        }
-
-        if (i > max) {
+        if ((i ?? 0) > max) {
             throw e;
         }
     }

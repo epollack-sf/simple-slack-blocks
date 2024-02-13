@@ -54,6 +54,10 @@ public class ImageBlock extends SlackBlock {
     }
 
     public class ImageBlockBuilder {
+        private static final Integer MAX_ALT_TEXT_LENGTH = 2000;
+        private static final Integer MAX_TITLE_LENGTH = 2000;
+        private static final Integer MAX_URL_LENGTH = 3000;
+        
         // no markup --> not enforced, need pattern matching (assuming markup == mrkdwn)
         private String altText;
         private String imageUrl;
@@ -63,28 +67,36 @@ public class ImageBlock extends SlackBlock {
         private ImageBlockBuilder() {}
     
         public ImageBlockBuilder altText(String altText) {
-            Validation.isNull(this.altText, new BuilderException('altText can only be invoked once per build'));
+            if (this.altText != null) {
+                throw new BuilderException('altText can only be invoked once per build');
+            }
             this.altText = altText;
 
             return this;
         }
 
         public ImageBlockBuilder imageUrl(String imageUrl) {
-            Validation.isNull(this.imageUrl, new BuilderException('imageUrl can only be invoked once per build'));
+            if (this.imageUrl != null) {
+                throw new BuilderException('imageUrl can only be invoked once per build');
+            }
             this.imageUrl = imageUrl;
 
             return this;
         }
 
-        public ImageBlockBuilder slackFile(SlackFile file) {
-            Validation.isNull(this.slackFile, new BuilderException('slackFile can only be invoked once per build'));
+        public ImageBlockBuilder slackFile(SlackFile slackFile) {
+            if (this.slackFile != null) {
+                throw new BuilderException('slackFile can only be invoked once per build');
+            }
             this.slackFile = slackFile;
 
             return this;
         }
 
         public ImageBlockBuilder title(SlackPlainTextObject title) {
-            Validation.isNull(this.imageUrl, new BuilderException('imageUrl can only be invoked once per build'));
+            if (this.imageUrl != null) {
+                throw new BuilderException('imageUrl can only be invoked once per build')
+            }
             this.title = title;
 
             return this;
@@ -93,26 +105,34 @@ public class ImageBlock extends SlackBlock {
         // Validate Schema
         // alt_text: no markup --> Not enforced, use regex
         private void validate() {
-            Validation.isNotNull(this.altText, new SchemaException('Alt_text is a required field and must be specified'));
-            Validation.isLessThan(this.altText.length(), 2000, new SchemaException('Alt_text must be less than 2000 characters'));
-            
-            
-            // Does not work as expected, if one is null, which is valid, then the condition fails
-            // Validation.areNotNull(new List<Object> {
-            //     this.imageUrl,
-            //     this.slackFile
-            // }, new SchemaException('Either image_url or slack_file must be populated'));
-            
-            // Validation class BREAKS DOWN HERE because imageUrl can be null, reason for null coalescing operator in Validation.cls
-            Validation.isLessThan(this.imageUrl.length(), 3000, new SchemaException('Image_url must be less than 3000 characters'));
-            
+            checkRequiredFields();
+            checkFieldLengths();
+        }
+
+        private void checkRequiredFields() {
+            if (this.altText == null) {
+                new SchemaException('Alt_text is a required field and must be specified');
+            }
+
+            if (this.altText == null && this.slackFile == null) {
+                throw new SchemaException('Either image_url or slack_file must be populated');
+            }
+        }
+
+        private void checkFieldLengths() {
+            if (this.altText > MAX_ALT_TEXT_LENGTH) {
+                throw new SchemaException('Alt_text must be less than ' + MAX_ALT_TEXT_LENGTH + ' characters');
+            }
+
+            if (this.imageUrl > MAX_URL_LENGTH) {
+                throw new SchemaException('Image_url must be less than ' + MAX_URL_LENGTH + ' characters');
+            }
+
             // Not good, checking for text length here forces SectionBlock to iterate over all fields
             // Mixing intrinsic with extrinsic validation
-            Validation.isLessThan(
-                this.title.getText().length(),
-                2000,
-                new SchemaException('Title must be less than 2000 characters')
-            );
+            if (this.title.getText().length() > MAX_TITLE_LENGTH) {
+                throw new SchemaException('Title must be less than ' + MAX_TITLE_LENGTH + ' characters');
+            }
         }
 
         public ImageBlock build() {

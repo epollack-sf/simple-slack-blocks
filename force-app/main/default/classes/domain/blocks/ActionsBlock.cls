@@ -32,16 +32,14 @@ public class ActionsBlock extends SlackBlock {
     }
 
     public class ActionsBlockBuilder {
+        private static final Integer MAX_ELEMENTS = 25;
+        
         private List<SlackBlockElement> elements;
 
         private ActionsBlockBuilder() {}
 
         public ActionsBlockBuilder element(SlackBlockElement element) {
-            // Replace conditional once upgrade to SOAP API v60.0 is complete
-            // this.elements = this.elements ?? new List<SlackBlockElement>();
-            if (this.elements == null) {
-                this.elements = new List<SlackBlockElement>();
-            }
+            this.elements = this.elements ?? new List<SlackBlockElement>();
             this.elements.add(element);
 
             return this;
@@ -49,8 +47,23 @@ public class ActionsBlock extends SlackBlock {
 
         // Validate Schema
         private void validate() {
-            Validation.isNotNull(this.elements, new SchemaException('elements is a required field and must be specified'));
-            Validation.isLessThan(this.elements.size(), 25, new SchemaException('Actions Blocks can only have 25 elements'));
+            // Alternative: Add required fields to builder constructor instead of checking after builder use
+            // Pros: shifts required field exceptions from runtime to compile time
+            // Cons: Some blocks, like ActionsBlock, have lists for required fields, defeating purpose of builder
+            checkRequiredFields();
+            checkFieldLengths();
+        }
+
+        private void checkRequiredFields() {
+            if (this.elements == null) {
+                throw new SchemaException('elements is a required field and must be specified');
+            }
+        }
+
+        private void checkFieldLengths() {
+            if (this.elements.size() > MAX_ELEMENTS) {
+                throw new SchemaException('Actions Blocks can only have ' + MAX_ELEMENTS + ' elements');
+            }
         }
 
         public ActionsBlock build() {

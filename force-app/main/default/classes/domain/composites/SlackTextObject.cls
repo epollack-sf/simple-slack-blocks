@@ -30,17 +30,19 @@ public abstract class SlackTextObject implements SlackBlockComposition {
     }
 
     private void setText(String text) {
-        Validation.isNotNull(text, new SchemaException('Text is a required field and must be populated'));
-        Validation.isGreaterThan(
-            text.length(), 
-            MIN_LENGTH,
-            new SchemaException('Text length must be at least ' + MIN_LENGTH + ' character(s)')
-        );
-        Validation.isLessThan(
-            text.length(),
-            MAX_LENGTH,
-            new SchemaException('Text must be less than ' + MAX_LENGTH + ' characters')
-        );
+        // Can be abstracted to checkRequiredFields and checkFieldLengths
+        if (text == null) {
+            throw new SchemaException('Text is a required field and must be populated');
+        }
+
+        if (text.length() < MIN_LENGTH) {
+            throw new SchemaException('Text length must be at least ' + MIN_LENGTH + ' character(s)');
+        }
+        
+        if (text.length() > MAX_LENGTH) {
+            throw new SchemaException('Text must be less than ' + MAX_LENGTH + ' characters');
+        }
+        
         this.text = text;
     }
 }

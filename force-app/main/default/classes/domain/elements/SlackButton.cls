@@ -73,6 +73,12 @@ public class SlackButton extends SlackBlockElement {
     }
 
     public class SlackButtonBuilder {
+        private static final Integer MAX_TEXT_LENGTH = 75;
+        private static final Integer MAX_ACCESSIBILITY_LABEL_LENGTH = 75;
+        private static final Integer MAX_ACTION_ID_LENGTH = 255;
+        private static final Integer MAX_VALUE_LENGTH = 2000;
+        private static final Integer MAX_URL_LENGTH = 3000;
+
         private SlackPlainTextObject text;
         private String actionId;
         private String url;
@@ -84,68 +90,108 @@ public class SlackButton extends SlackBlockElement {
         private SlackButtonBuilder() {}
 
         public SlackButtonBuilder text(SlackPlainTextObject text) {
-            Validation.isNull(this.text, new BuilderException('text can only be invoked once per build'));
+            if (this.text != null) {
+                throw new BuilderException('text can only be invoked once per build');
+            }
             this.text = text;
 
             return this;
         }
 
         public SlackButtonBuilder actionId(String actionId) {
-            Validation.isNull(this.actionId, new BuilderException('actionId can only be invoked once per build'));
+            if (this.actionId != null) {
+                throw new BuilderException('actionId can only be invoked once per build');
+            }
             this.actionId = actionId;
 
             return this;
         }
 
         public SlackButtonBuilder url(String url) {
-            Validation.isNull(this.url, new BuilderException('url can only be invoked once per build'));
+            if (this.url != null) {
+                throw new BuilderException('url can only be invoked once per build');
+            }
             this.url = url;
 
             return this;
         }
 
         public SlackButtonBuilder value(String value) {
-            Validation.isNull(this.value, new BuilderException('value can only be invoked once per build'));
+            if (this.value != null) {
+                throw new BuilderException('value can only be invoked once per build');
+            }
             this.value = value;
 
             return this;
         }
 
         public SlackButtonBuilder confirm(SlackConfirm confirm) {
-            Validation.isNull(this.confirm, new BuilderException('confirm can only be invoked once per build'));
+            if (this.confirm != null) {
+                throw new BuilderException('confirm can only be invoked once per build');
+            }
             this.confirm = confirm;
 
             return this;
         }
 
         public SlackButtonBuilder accessibilityLabel(String accessibilityLabel) {
-            Validation.isNull(this.accessibilityLabel, new BuilderException('accessibilityLabel can only be invoked once per build'));
+            if (this.accessibilityLabel != null) {
+                throw new BuilderException('accessibilityLabel can only be invoked once per build');
+            }
             this.accessibilityLabel = accessibilityLabel;
 
             return this;
         }
 
         public SlackButtonBuilder primary() {
-            Validation.isNull(this.style, new BuilderException('style can only be set once per build'));
+            if (this.style != null) {
+                throw new BuilderException('style can only be set once per build');
+            }
             this.style = 'primary';
 
             return this;
         }
 
         public SlackButtonBuilder danger() {
-            Validation.isNull(this.style, new BuilderException('style can only be set once per build'));
+            if (this.style != null) {
+                throw new BuilderException('style can only be set once per build');
+            }
             this.style = 'danger';
 
             return this;
         }
 
         private void validate() {
-            Validation.isNotNull(this.text, new SchemaException('Text is a required field and must be populated'));
-            Validation.isLessThan(this.text.getText().length(), 75, new SchemaException('Text length must be less than 75 characters'));
-            Validation.isLessThan(this.actionId?.length(), 255, new SchemaException('Action id must be less than 255 characters'));
-            Validation.isLessThan(this.url?.length(), 3000, new SchemaException('Url must be less than 3000 characters'));
-            Validation.isLessThan(this.value?.length(), 2000, new SchemaException('Value must be less than 2000 characters'));
-            Validation.isLessThan(this.accessibilityLabel?.length(), 75, new SchemaException('Accessiblity label must be less than 75 characters'));
+            checkRequriedFields();
+            checkFieldLengths();
+        }
+
+        private void checkRequriedFields() {
+            if (this.text == null) {
+                throw new SchemaException('Text is a required field and must be populated');
+            }
+        }
+
+        private void checkFieldLengths() {
+            if (this.text.getText().length() > MAX_TEXT_LENGTH) {
+                throw new SchemaException('Text length must be less than ' + MAX_TEXT_LENGTH + ' characters');
+            }
+
+            if (this.actionId?.length() > MAX_ACTION_ID_LENGTH) {
+                throw new SchemaException('Action id must be less than ' + MAX_ACTION_ID_LENGTH + ' characters');
+            }
+
+            if (this.url?.length() > MAX_URL_LENGTH) {
+                throw new SchemaException('Url must be less than ' + MAX_URL_LENGTH + ' characters');
+            }
+
+            if (this.value?.length() > MAX_VALUE_LENGTH) {
+                throw new SchemaException('Value must be less than ' + MAX_VALUE_LENGTH + ' characters');
+            }
+
+            if (this.accessibilityLabel?.length() > MAX_ACCESSIBILITY_LABEL_LENGTH) {
+                throw new SchemaException('Accessiblity label must be less than ' + MAX_ACCESSIBILITY_LABEL_LENGTH + ' characters');
+            }
         }
 
         public SlackButton build() {
