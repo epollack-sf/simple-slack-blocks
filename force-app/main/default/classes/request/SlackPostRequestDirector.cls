@@ -6,6 +6,9 @@ public class SlackPostRequestDirector {
     }
 
     public SlackPostRequest constructFunFact() {
+        
+        
+        
         return builder
             .channel('finsouTest')
             .text('Hello, I am backup text')
@@ -14,6 +17,7 @@ public class SlackPostRequestDirector {
                     .text(new SlackPlainTextObject('Header'))
                     .build(),
                 DividerBlock.builder().build(),
+                // add .fields additional to .field
                 SectionBlock.builder()
                     .text(new SlackPlainTextObject('Test'))
                     .field(new SlackPlainTextObject('Field1', true))
@@ -41,6 +45,7 @@ public class SlackPostRequestDirector {
                     .element(
                         SlackButton.builder()
                             .text(new SlackPlainTextObject('Yes'))
+                            // Change to enum and pass to .style
                             .primary()
                             .build()
                     )
