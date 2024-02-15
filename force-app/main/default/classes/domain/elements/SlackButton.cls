@@ -20,24 +20,29 @@
 
 public class SlackButton extends SlackBlockElement {
     private static final String TYPE = 'button';
+    private static final Integer MAX_TEXT_LENGTH = 75;
+    private static final Integer MAX_ACCESSIBILITY_LABEL_LENGTH = 75;
+    private static final Integer MAX_ACTION_ID_LENGTH = 255;
+    private static final Integer MAX_VALUE_LENGTH = 2000;
+    private static final Integer MAX_URL_LENGTH = 3000;
     
     private final SlackPlainTextObject text;
-    private final String actionId;
+    private final String action_id;
     private final String url;
     private final String value;
     private final String style;
     private final SlackConfirm confirm;
-    private final String accessibilityLabel;
+    private final String accessibility_label;
     
     private SlackButton(SlackButtonBuilder builder) {
         super(TYPE);
         this.text = builder.text;
-        this.actionId = builder.actionId;
+        this.action_id = builder.action_id;
         this.url = builder.url;
         this.value = builder.value;
         this.style = builder.style;
         this.confirm = builder.confirm;
-        this.accessibilityLabel = builder.accessibilityLabel;
+        this.accessibility_label = builder.accessibility_label;
     }
 
     public SlackPlainTextObject getText() {
@@ -45,7 +50,7 @@ public class SlackButton extends SlackBlockElement {
     }
 
     public String getActionId() {
-        return actionId;
+        return action_id;
     }
 
     public String getUrl() {
@@ -65,7 +70,7 @@ public class SlackButton extends SlackBlockElement {
     }
 
     public String getAccessibilityLabel() {
-        return accessibilityLabel;
+        return accessibility_label;
     }
 
     public static SlackButtonBuilder builder() {
@@ -73,19 +78,13 @@ public class SlackButton extends SlackBlockElement {
     }
 
     public class SlackButtonBuilder {
-        private static final Integer MAX_TEXT_LENGTH = 75;
-        private static final Integer MAX_ACCESSIBILITY_LABEL_LENGTH = 75;
-        private static final Integer MAX_ACTION_ID_LENGTH = 255;
-        private static final Integer MAX_VALUE_LENGTH = 2000;
-        private static final Integer MAX_URL_LENGTH = 3000;
-
         private SlackPlainTextObject text;
-        private String actionId;
+        private String action_id;
         private String url;
         private String value;
         private String style;
         private SlackConfirm confirm;
-        private String accessibilityLabel;
+        private String accessibility_label;
 
         private SlackButtonBuilder() {}
 
@@ -99,10 +98,10 @@ public class SlackButton extends SlackBlockElement {
         }
 
         public SlackButtonBuilder actionId(String actionId) {
-            if (this.actionId != null) {
-                throw new BuilderException('actionId can only be invoked once per build');
+            if (this.action_id != null) {
+                throw new BuilderException('action_id can only be invoked once per build');
             }
-            this.actionId = actionId;
+            this.action_id = actionId;
 
             return this;
         }
@@ -135,14 +134,15 @@ public class SlackButton extends SlackBlockElement {
         }
 
         public SlackButtonBuilder accessibilityLabel(String accessibilityLabel) {
-            if (this.accessibilityLabel != null) {
-                throw new BuilderException('accessibilityLabel can only be invoked once per build');
+            if (this.accessibility_label != null) {
+                throw new BuilderException('accessibility_label can only be invoked once per build');
             }
-            this.accessibilityLabel = accessibilityLabel;
+            this.accessibility_label = accessibilityLabel;
 
             return this;
         }
 
+        // change to single style() method that takes in enum
         public SlackButtonBuilder primary() {
             if (this.style != null) {
                 throw new BuilderException('style can only be set once per build');
@@ -177,7 +177,7 @@ public class SlackButton extends SlackBlockElement {
                 throw new SchemaException('Text length must be less than ' + MAX_TEXT_LENGTH + ' characters');
             }
 
-            if (this.actionId?.length() > MAX_ACTION_ID_LENGTH) {
+            if (this.action_id?.length() > MAX_ACTION_ID_LENGTH) {
                 throw new SchemaException('Action id must be less than ' + MAX_ACTION_ID_LENGTH + ' characters');
             }
 
@@ -189,7 +189,7 @@ public class SlackButton extends SlackBlockElement {
                 throw new SchemaException('Value must be less than ' + MAX_VALUE_LENGTH + ' characters');
             }
 
-            if (this.accessibilityLabel?.length() > MAX_ACCESSIBILITY_LABEL_LENGTH) {
+            if (this.accessibility_label?.length() > MAX_ACCESSIBILITY_LABEL_LENGTH) {
                 throw new SchemaException('Accessiblity label must be less than ' + MAX_ACCESSIBILITY_LABEL_LENGTH + ' characters');
             }
         }

@@ -16,6 +16,7 @@
 
 public class HeaderBlock extends SlackBlock {
     private static final String TYPE = 'header';
+    private static final Integer MAX_TEXT_LENGTH = 150;
     
     private final SlackPlainTextObject text;
 
@@ -33,8 +34,6 @@ public class HeaderBlock extends SlackBlock {
     }
 
     public class HeaderBlockBuilder {
-        private static final Integer MAX_TEXT_LENGTH = 150;
-        
         private SlackPlainTextObject text;
 
         private HeaderBlockBuilder() {}

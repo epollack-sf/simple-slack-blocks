@@ -11,8 +11,6 @@ public class SlackApiClient {
 
     // Why queueable?
     public void usersLookupByEmail(String email) {
-        String endpoint
-        
         HttpRequest req = new HttpRequest();
         // req.setEndpoint(base)
 

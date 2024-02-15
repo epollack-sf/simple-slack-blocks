@@ -13,6 +13,7 @@
 
 public class ActionsBlock extends SlackBlock {
     private static final String TYPE = 'actions';
+    private static final Integer MAX_ELEMENTS = 25;
     
     // see compatible elements --> Not enforced
     // enforce with ActionsBlockElement interface
@@ -32,8 +33,6 @@ public class ActionsBlock extends SlackBlock {
     }
 
     public class ActionsBlockBuilder {
-        private static final Integer MAX_ELEMENTS = 25;
-        
         private List<SlackBlockElement> elements;
 
         private ActionsBlockBuilder() {}

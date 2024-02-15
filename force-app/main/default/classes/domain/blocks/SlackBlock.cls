@@ -1,10 +1,10 @@
 public abstract class SlackBlock {
     protected String type;
-    protected String blockId;
+    protected String block_id;
 
-    protected SlackBlock(String type, String blockId) {
+    protected SlackBlock(String type, String block_id) {
         this.type = type;
-        this.blockId = blockId;
+        this.block_id = block_id;
     }
 
     // Safe initialization - forces children to call parameterized constructor
@@ -17,10 +17,10 @@ public abstract class SlackBlock {
     }
     
     public String getBlockId() {
-        return blockId;
+        return block_id;
     }
     
-    public void setBlockId(String blockId) {
-        this.blockId = blockId;
+    public void setBlockId(String block_id) {
+        this.block_id = block_id;
     }
 }

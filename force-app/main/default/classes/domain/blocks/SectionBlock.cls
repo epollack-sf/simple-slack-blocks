@@ -18,6 +18,9 @@
 
 public class SectionBlock extends SlackBlock {
     private static final String TYPE = 'section';
+    private static final Integer MAX_FIELDS = 10;
+    private static final Integer MAX_FIELD_LENGTH = 2000;
+    
     
     private final SlackTextObject text;
     private final List<SlackTextObject> fields;
@@ -47,9 +50,6 @@ public class SectionBlock extends SlackBlock {
     }
     
     public class SectionBlockBuilder {
-        private static final Integer MAX_FIELDS = 10;
-        private static final Integer MAX_FIELD_LENGTH = 2000;
-        
         private SlackTextObject text;
         private List<SlackTextObject> fields;
         private SlackBlockElement accessory;
@@ -58,7 +58,7 @@ public class SectionBlock extends SlackBlock {
 
         public SectionBlockBuilder text(SlackTextObject text) {
             if (this.text != null) {
-                throw new new BuilderException('text can only be invoked once per build');
+                throw new BuilderException('text can only be invoked once per build');
             }
             this.text = text;
             
@@ -74,7 +74,7 @@ public class SectionBlock extends SlackBlock {
 
         public SectionBlockBuilder accessory(SlackBlockElement accessory) {
             if (this.accessory != null) {
-                throw new new BuilderException('accessory can only be invoked once per build');
+                throw new BuilderException('accessory can only be invoked once per build');
             }
             this.accessory = accessory;
 

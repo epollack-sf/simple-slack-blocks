@@ -6,9 +6,6 @@ public class SlackPostRequestDirector {
     }
 
     public SlackPostRequest constructFunFact() {
-        
-        
-        
         return builder
             .channel('finsouTest')
             .text('Hello, I am backup text')

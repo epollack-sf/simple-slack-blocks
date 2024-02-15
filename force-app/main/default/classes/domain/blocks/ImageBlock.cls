@@ -19,30 +19,34 @@
 
 public class ImageBlock extends SlackBlock {
     private static final String TYPE = 'image';
+
+    private static final Integer MAX_ALT_TEXT_LENGTH = 2000;
+    private static final Integer MAX_TITLE_LENGTH = 2000;
+    private static final Integer MAX_URL_LENGTH = 3000;
     
-    private final String altText;
-    private final String imageUrl;
-    private final SlackFile slackFile;
+    private final String alt_text;
+    private final String image_url;
+    private final SlackFile slack_file;
     private final SlackPlainTextObject title;
     
     private ImageBlock(ImageBlockBuilder builder) {
         super(TYPE, null);
-        this.altText = builder.altText;
-        this.imageUrl = builder.imageUrl;
-        this.slackFile = builder.slackFile;
+        this.alt_text = builder.alt_text;
+        this.image_url = builder.image_url;
+        this.slack_file = builder.slack_file;
         this.title = builder.title;
     }
 
     public String getAltText() {
-        return altText;
+        return alt_text;
     }
 
     public String getImageUrl() {
-        return imageUrl;
+        return image_url;
     }
 
     public SlackFile getSlackFile() {
-        return slackFile;
+        return slack_file;
     }
 
     public SlackPlainTextObject getTitle() {
@@ -54,48 +58,44 @@ public class ImageBlock extends SlackBlock {
     }
 
     public class ImageBlockBuilder {
-        private static final Integer MAX_ALT_TEXT_LENGTH = 2000;
-        private static final Integer MAX_TITLE_LENGTH = 2000;
-        private static final Integer MAX_URL_LENGTH = 3000;
-        
         // no markup --> not enforced, need pattern matching (assuming markup == mrkdwn)
-        private String altText;
-        private String imageUrl;
-        private SlackFile slackFile;
+        private String alt_text;
+        private String image_url;
+        private SlackFile slack_file;
         private SlackPlainTextObject title;
 
         private ImageBlockBuilder() {}
     
-        public ImageBlockBuilder altText(String altText) {
-            if (this.altText != null) {
-                throw new BuilderException('altText can only be invoked once per build');
+        public ImageBlockBuilder altText(String alt_text) {
+            if (this.alt_text != null) {
+                throw new BuilderException('alt_text can only be invoked once per build');
             }
-            this.altText = altText;
+            this.alt_text = alt_text;
 
             return this;
         }
 
-        public ImageBlockBuilder imageUrl(String imageUrl) {
-            if (this.imageUrl != null) {
-                throw new BuilderException('imageUrl can only be invoked once per build');
+        public ImageBlockBuilder imageUrl(String image_url) {
+            if (this.image_url != null) {
+                throw new BuilderException('image_url can only be invoked once per build');
             }
-            this.imageUrl = imageUrl;
+            this.image_url = image_url;
 
             return this;
         }
 
-        public ImageBlockBuilder slackFile(SlackFile slackFile) {
-            if (this.slackFile != null) {
-                throw new BuilderException('slackFile can only be invoked once per build');
+        public ImageBlockBuilder slackFile(SlackFile slack_file) {
+            if (this.slack_file != null) {
+                throw new BuilderException('slack_file can only be invoked once per build');
             }
-            this.slackFile = slackFile;
+            this.slack_file = slack_file;
 
             return this;
         }
 
         public ImageBlockBuilder title(SlackPlainTextObject title) {
-            if (this.imageUrl != null) {
-                throw new BuilderException('imageUrl can only be invoked once per build')
+            if (this.title != null) {
+                throw new BuilderException('title can only be invoked once per build');
             }
             this.title = title;
 
@@ -110,21 +110,21 @@ public class ImageBlock extends SlackBlock {
         }
 
         private void checkRequiredFields() {
-            if (this.altText == null) {
+            if (this.alt_text == null) {
                 new SchemaException('Alt_text is a required field and must be specified');
             }
 
-            if (this.altText == null && this.slackFile == null) {
+            if (this.alt_text == null && this.slack_file == null) {
                 throw new SchemaException('Either image_url or slack_file must be populated');
             }
         }
 
         private void checkFieldLengths() {
-            if (this.altText > MAX_ALT_TEXT_LENGTH) {
+            if (this.alt_text.length() > MAX_ALT_TEXT_LENGTH) {
                 throw new SchemaException('Alt_text must be less than ' + MAX_ALT_TEXT_LENGTH + ' characters');
             }
 
-            if (this.imageUrl > MAX_URL_LENGTH) {
+            if (this.image_url.length() > MAX_URL_LENGTH) {
                 throw new SchemaException('Image_url must be less than ' + MAX_URL_LENGTH + ' characters');
             }
 
