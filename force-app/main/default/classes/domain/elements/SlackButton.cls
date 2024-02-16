@@ -142,20 +142,23 @@ public class SlackButton extends SlackBlockElement {
         }
 
         // change to single style() method that takes in enum
-        public SlackButtonBuilder primary() {
+        public SlackButtonBuilder style(SlackButtonStyle style) {
             if (this.style != null) {
                 throw new BuilderException('style can only be set once per build');
             }
-            this.style = 'primary';
 
-            return this;
-        }
-
-        public SlackButtonBuilder danger() {
-            if (this.style != null) {
-                throw new BuilderException('style can only be set once per build');
+            switch on style {
+                when PRIMARY {
+                    this.style = 'primary';
+                }
+                when DANGER {
+                    this.style = 'danger';
+                }
+                when else {
+                    // Default: style = null
+                    // Should not run
+                }
             }
-            this.style = 'danger';
 
             return this;
         }

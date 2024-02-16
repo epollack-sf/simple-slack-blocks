@@ -42,14 +42,13 @@ public class SlackPostRequestDirector {
                     .element(
                         SlackButton.builder()
                             .text(new SlackPlainTextObject('Yes'))
-                            // Change to enum and pass to .style
-                            .primary()
+                            .style(SlackButtonStyle.PRIMARY)
                             .build()
                     )
                     .element(
                         SlackButton.builder()
                             .text(new SlackPlainTextObject('No'))
-                            .danger()
+                            .style(SlackButtonStyle.DANGER)
                             .build()
                     )
                     .build()
