@@ -20,7 +20,7 @@ public class SlackHttpClient {
         return client.send(createRequest(httpMethod, apiMethod, params));
     }
 
-    public HttpResponse post(String apiMethod, Object jsonBody) {
+    public HttpResponse post(String apiMethod, String jsonBody) {
         return post(apiMethod, null, jsonBody);
     }
 

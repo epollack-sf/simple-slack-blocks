@@ -12,6 +12,8 @@ public class SlackHttpRequest {
         HttpRequest req = new HttpRequest();
         req.setMethod(httpMethod);
         req.setTimeout(60000);
+
+        return req;
     }
 
     public void setEndpoint(String apiMethod, HttpRequestQueryParams params) {
@@ -27,7 +29,7 @@ public class SlackHttpRequest {
         request.setBody(body);
     }
 
-    public void getHttpRequest() {
+    public HttpRequest getHttpRequest() {
         return request;
     }
 }
