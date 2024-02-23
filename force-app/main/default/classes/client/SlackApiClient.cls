@@ -10,22 +10,18 @@ public class SlackApiClient {
     }
 
     public UsersLookupByEmailResponse usersLookupByEmail(UsersLookupByEmailRequest req) {
-        String method = 'users.LookupByEmail';
-
+        final String method = 'users.LookupByEmail';
         HttpRequestQueryParams params = new HttpRequestQueryParams();
         params.addParam('email', req.getEmail());
-
         HttpResponse res = slackHttpClient.get(method, params);
 
         return JSON.deserialize(res.getBody(), UsersLookupByEmailResponse.class);
     }
 
     public ChatPostMessageResponse chatPostMessage(ChatPostMessageRequest req) {
-        String method = 'chat.postMessage';
-        
+        final String method = 'chat.postMessage';
         HttpResponse res = slackHttpClient.post(method, JSON.serialize(req));
 
         return JSON.deserialize(res.getBody(), ChatPostMessageResponse.class);
-
     }
 }
