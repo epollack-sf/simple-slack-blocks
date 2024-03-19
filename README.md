@@ -1,18 +1,10 @@
-# Salesforce DX Project: Next Steps
+# Simple Slack Blocks
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+Programmatically build Slack surface views using the Block Kit UI.
 
-## How Do You Plan to Deploy Your Changes?
+## Overview
+- Have complex views that require control over which components are rendered? 
+- Building a simple Apex Slack service that doesn't need the overhead of the Apex SDK for Slack?
+- Prefer code over configuration?
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
-
-## Configure Your Salesforce DX Project
-
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
-
-## Read All About It
-
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+Simple Slack Blocks is a pro-code SDK for Slack's Block UI that provides all the UI components, elements, and composites necessary for building dynamic and flexible views for your Slack surfaces. Each component and element is defined according to API specifications and has a corresponding builder for fluent creation. Once your view is composed, the entire structure can be serialized into JSON using [```JSON.serialize()```](https://developer.salesforce.com/docs/atlas.en-us.apexref.meta/apexref/apex_class_System_Json.htm#unique_1535351403).
