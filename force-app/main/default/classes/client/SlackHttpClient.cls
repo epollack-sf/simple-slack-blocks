@@ -1,7 +1,9 @@
 // Responsible for constructing Slack HTTP requests and executing them in the context of the Slack API
 
 public class SlackHttpClient {
-    private static final String BASE_URL = 'https://slack.com/api';
+    // Token should be stored in named credential for security
+    // Should there be an option to pass it in instead?
+    private static final String BASE_URL = 'callout:Slack_API';
     private static final Integer DEFAULT_TIMEOUT = 60000;
 
     private final Http client;
@@ -35,25 +37,21 @@ public class SlackHttpClient {
     }
 
     private HttpRequest createRequest(String httpMethod, String apiMethod, HttpRequestQueryParams params, String jsonBody) {
+        Boolean hasBody = httpMethod.equals('POST') || httpMethod.equals('PUT');
         String endpoint = BASE_URL + '/' + apiMethod;
         
         HttpRequest req = new HttpRequest();
+        if (hasBody) {
+            req.setHeader('Content-Type', 'application/json');
+        }
         req.setTimeout(DEFAULT_TIMEOUT);
         req.setMethod(httpMethod);
         req.setEndpoint((params == null) ? endpoint : endpoint + '?' + params.expand());
-        if (jsonBody != null) {
+        if (hasBody && jsonBody != null) {
             req.setBody(jsonBody);
         }
 
         return req;
-        
-        // SlackHttpRequest req = new SlackHttpRequest(httpMethod);
-        // req.setEndpoint(apiMethod, params);
-        // if (jsonBody != null) {
-        //     req.setBody(jsonBody);
-        // }
-
-        // return req.getHttpRequest();
     }
 
     
