@@ -5,14 +5,7 @@ UsersLookupByEmailRequest idReq = UsersLookupByEmailRequest.builder().email('epo
 UsersLookupByEmailResponse idRes = client.usersLookupByEmail(idReq);
 String slackUserId = idRes?.getUser()?.getId();
 
-System.debug(slackUserId);
-
-// Construct message
-ChatPostMessageRequest messageReq = ChatPostMessageRequest
-    .builder()
-    .channel('C06LD62CYBT')
-    .text('test text')
-    .blocks(new List<SlackBlock> {
+List<SlackBlock> blocks = new List<SlackBlock> {
         HeaderBlock.builder()
             .text(new SlackPlainTextObject('Header'))
             .build(),
@@ -54,9 +47,15 @@ ChatPostMessageRequest messageReq = ChatPostMessageRequest
                     .style(SlackButtonStyle.DANGER)
                     .build()
             )
-            .build()
-	})
+            .build() };
+
+// Construct message
+ChatPostMessageRequest messageReq = ChatPostMessageRequest.builder()
+    // FwF-Test channel id
+    .channel('C06LD62CYBT')
+    .text('test text')
+    .blocks(blocks)
     .build();
 
 ChatPostMessageResponse messageRes = client.chatPostMessage(messageReq);
-System.debug(messageRes.getOk());
+System.debug(messageRes.getOk() + ' ' + messageRes.getError());
