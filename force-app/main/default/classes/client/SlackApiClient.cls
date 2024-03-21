@@ -18,7 +18,7 @@ public class SlackApiClient {
 
     public ChatPostMessageResponse chatPostMessage(ChatPostMessageRequest req) {
         final String method = 'chat.postMessage';
-        HttpResponse res = slackHttpClient.post(method, JSON.serialize(req));
+        HttpResponse res = slackHttpClient.post(method, JSON.serialize(req, true));
 
         return (ChatPostMessageResponse) JSON.deserialize(res.getBody(), ChatPostMessageResponse.class);
     }
