@@ -2,15 +2,13 @@
 // Responsible for setting up the request and parsing the response
 public class SlackApiClient {
     private SlackHttpClient slackHttpClient;
-    private String token;
 
-    public SlackApiClient(String token) {
-        this.token = token;
+    public SlackApiClient() {
         slackHttpClient = new SlackHttpClient();
     }
 
     public UsersLookupByEmailResponse usersLookupByEmail(UsersLookupByEmailRequest req) {
-        final String method = 'users.LookupByEmail';
+        final String method = 'users.lookupByEmail';
         HttpRequestQueryParams params = new HttpRequestQueryParams();
         params.setParam('email', req.getEmail());
         HttpResponse res = slackHttpClient.get(method, params);
