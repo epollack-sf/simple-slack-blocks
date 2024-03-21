@@ -101,9 +101,19 @@ public class SectionBlock extends SlackBlock {
 
             // Not good, not offloading validation off to another object, forcing more complex logic here
             // Mixing intrinsic with extrinsic validation
-            for (SlackTextObject field : this.fields) {
-                if (field.getText().length() > MAX_FIELD_LENGTH) {
-                    throw new SchemaException('Fields must be less than or equal to ' + MAX_FIELD_LENGTH + ' characters');
+
+
+            // NPE when this.fields == null due to for loop
+            // invalid_blocks response when fields is not null and empty
+            // Options:
+            // - Handle inside the block with if statement and address further when implementing validation -> CURRENT, NOT GOOD
+            // - Handle by altering resulting JSON
+            
+            if (this.fields != null) {
+                for (SlackTextObject field : this.fields) {
+                    if (field.getText().length() > MAX_FIELD_LENGTH) {
+                        throw new SchemaException('Fields must be less than or equal to ' + MAX_FIELD_LENGTH + ' characters');
+                    }
                 }
             }
         }
