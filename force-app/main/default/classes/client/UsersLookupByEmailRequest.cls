@@ -13,6 +13,9 @@ public class UsersLookupByEmailRequest implements SlackApiRequest {
         return new UsersLookupByEmailRequestBuilder();
     }
 
+    // Validate?
+    // Do I want to ensure the validitiy of the request? Isn't the server already doing that?
+    // On the other hand, this would change how unified the builders are and not be completely in line with my goal to prevent bad api calls
     public class UsersLookupByEmailRequestBuilder {
         private String email;
 
@@ -24,13 +27,7 @@ public class UsersLookupByEmailRequest implements SlackApiRequest {
             return this;
         }
 
-        // Check if valid email with regex
-        private void validate() {
-
-        }
-
         public UsersLookupByEmailRequest build() {
-            validate();
             return new UsersLookupByEmailRequest(this);
         }
     }
