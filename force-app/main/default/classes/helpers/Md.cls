@@ -57,7 +57,7 @@ public class Md {
         String[] blockQuoteItems = text.split('\n');
 
         List<String> result = new List<String>();
-        for (String blockQuoteItem: blockQuoteItems) {
+        for (String blockQuoteItem : blockQuoteItems) {
             result.add(quote(blockQuoteItem));
         }
 
