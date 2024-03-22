@@ -1,53 +1,28 @@
+// Create client
 SlackApiClient client = new SlackApiClient();
 
 // Get User Id
-UsersLookupByEmailRequest idReq = UsersLookupByEmailRequest.builder().email('epollack@salesforce.com').build();
+UsersLookupByEmailRequest idReq = UsersLookupByEmailRequest.builder()
+    .email('epollack@salesforce.com')
+    .build();
 UsersLookupByEmailResponse idRes = client.usersLookupByEmail(idReq);
+
 String slackUserId = idRes?.getUser()?.getId();
 
-List<SlackBlock> blocks = new List<SlackBlock> {
-        HeaderBlock.builder()
-            .text(new SlackPlainTextObject('Header'))
-            .build(),
-        DividerBlock.builder().build(),
-        // add .fields additional to .field
-        SectionBlock.builder()
-            .text(new SlackPlainTextObject('Test'))
-            .field(new SlackPlainTextObject('Field1', true))
-            .field(new SlackPlainTextObject('Field1', true))
-            .field(new SlackPlainTextObject('Field1', true))
-            .field(new SlackMrkdwnTextObject('*Field1*:\n_test_', true))
-            .field(new SlackPlainTextObject('Field1', true))
-            .field(new SlackPlainTextObject('Field1', true))
-            .field(new SlackPlainTextObject('Field1', true))
-            .field(new SlackPlainTextObject('Field1', true))
-            .accessory(
-                SlackButton.builder()
-                    .text(new SlackPlainTextObject('Click Me!'))
-                    .build()
-            )
-            .build(),
-        DividerBlock.builder().build(),
-        ImageBlock.builder()
-            .title(new SlackPlainTextObject('Intense Cow'))
-            .altText('Alt text')
-            .imageUrl('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnm163IvLzBVh86TlKZil3q4O3rMxUBQvodw&usqp=CAU')
-            .build(),
-        DividerBlock.builder().build(),
-        ActionsBlock.builder()
-            .element(
-                SlackButton.builder()
-                    .text(new SlackPlainTextObject('Yes'))
-                    .style(SlackButtonStyle.PRIMARY)
-                    .build()
-            )
-            .element(
-                SlackButton.builder()
-                    .text(new SlackPlainTextObject('No'))
-                    .style(SlackButtonStyle.DANGER)
-                    .build()
-            )
-            .build() };
+// Construct Blocks
+List<SlackBlock> blocks = new List<SlackBlock> { 
+    HeaderBlock.builder()
+        .text(new SlackPlainTextObject('Hi'))
+        .build(),
+    DividerBlock.builder()
+        .build(),
+    SectionBlock.builder()
+        .text(new SlackMrkdwnTextObject('This is from Apex ' + Md.emoji('celebrate')))
+        .field(new SlackMrkdwnTextObject(Md.bold('Hello World') + '\n' + 
+                Md.code('System.out.println("Hello World");') + '\n' + 
+                Md.user(slackUserId)))
+        .build()
+};
 
 // Construct message
 ChatPostMessageRequest messageReq = ChatPostMessageRequest.builder()
@@ -58,4 +33,4 @@ ChatPostMessageRequest messageReq = ChatPostMessageRequest.builder()
     .build();
 
 ChatPostMessageResponse messageRes = client.chatPostMessage(messageReq);
-System.debug(messageRes.getOk() + ' ' + messageRes.getError());
+System.debug(messageRes);
